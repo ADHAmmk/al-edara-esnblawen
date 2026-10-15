@@ -1,8 +1,4 @@
-/**
- * بوابة إدارة السنبلاوين التعليمية - نظام إدارة وبحث المدارس التفاعلي
- */
 
-// قائمة المدارس الثانوية التابعة لإدارة السنبلاوين التعليمية
 const schoolsData = [
     {
         id: 1,
@@ -294,7 +290,6 @@ const schoolsData = [
     }
 ];
 
-// حالة التصفية الحالية
 const filterState = {
     searchQuery: "",
     category: "all",
@@ -303,7 +298,6 @@ const filterState = {
     viewMode: "grid" // 'grid' | 'list'
 };
 
-// تطبيع النصوص العربية لتسهيل البحث الدقيق
 function normalizeArabic(text) {
     if (!text) return "";
     return text
@@ -315,11 +309,9 @@ function normalizeArabic(text) {
         .replace(/[ًٌٍَُِّْ]/g, ""); // إزالة التشكيل
 }
 
-// تصفية وترتيب المدارس
 function getFilteredSchools() {
     let result = [...schoolsData];
 
-    // تصفية البحث النصي
     if (filterState.searchQuery) {
         const queryNorm = normalizeArabic(filterState.searchQuery);
         result = result.filter(school => {
@@ -334,17 +326,14 @@ function getFilteredSchools() {
         });
     }
 
-    // تصفية التصنيف (بنين / بنات / مشترك / لغات / فني)
     if (filterState.category !== "all") {
         result = result.filter(school => school.type === filterState.category);
     }
 
-    // تصفية المنطقة
     if (filterState.area !== "all") {
         result = result.filter(school => school.area === filterState.area);
     }
 
-    // الترتيب
     if (filterState.sort === "name-asc") {
         result.sort((a, b) => a.name.localeCompare(b.name, "ar"));
     } else if (filterState.sort === "name-desc") {
@@ -354,11 +343,10 @@ function getFilteredSchools() {
     return result;
 }
 
-// إنشاء بطاقة المدرسة في واجهة المستخدم
 function renderSchoolCard(school) {
-    const isLive = school.hasLiveSite;
-    const siteUrl = school.link && school.link.trim() !== "" ? school.link : `javascript:openSchoolModal(${school.id});`;
-    const targetAttr = isLive ? 'target="_blank" rel="noopener noreferrer"' : '';
+    const isLive = school.hasLiveSite && Boolean(school.link && school.link.trim() !== "");
+    const siteUrl = isLive ? school.link : "https://el-sadat-school.vercel.app/";
+    const targetAttr = 'target="_blank" rel="noopener noreferrer"';
 
     return `
         <article class="school-card" data-id="${school.id}">
@@ -393,21 +381,16 @@ function renderSchoolCard(school) {
                 </div>
 
                 <div class="card-actions">
-                    <a href="${siteUrl}" ${targetAttr} class="btn-card-visit" title="زيارة المنصة">
-                        <i class="fa-solid ${isLive ? 'fa-arrow-up-right-from-square' : 'fa-circle-info'}"></i>
-                        ${isLive ? 'زيارة الموقع' : 'تفاصيل المدرسة'}
+                    <a href="${siteUrl}" ${targetAttr} class="btn-card-visit" title="زيارة الموقع">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        زيارة الموقع
                     </a>
-                    <button type="button" class="btn-card-details" onclick="openSchoolModal(${school.id})">
-                        <i class="fa-solid fa-file-lines"></i>
-                        بيانات كاملة
-                    </button>
                 </div>
             </div>
         </article>
     `;
 }
 
-// تحديث عرض المدارس في الصفحة
 function renderSchools() {
     const container = document.getElementById("schoolsGrid");
     const countBadge = document.getElementById("schoolsCount");
@@ -415,7 +398,6 @@ function renderSchools() {
 
     const filtered = getFilteredSchools();
 
-    // تحديث العداد
     if (countBadge) {
         countBadge.textContent = filtered.length;
     }
@@ -439,112 +421,9 @@ function renderSchools() {
     container.innerHTML = filtered.map(school => renderSchoolCard(school)).join("");
 }
 
-// نافذة التفاصيل المنبثقة
-function openSchoolModal(schoolId) {
-    const school = schoolsData.find(s => s.id === schoolId);
-    if (!school) return;
+function openSchoolModal(schoolId) {}
+function closeSchoolModal() {}
 
-    const modal = document.getElementById("schoolModal");
-    const modalContent = document.getElementById("modalDynamicContent");
-    if (!modal || !modalContent) return;
-
-    const isLive = school.hasLiveSite;
-    const siteUrl = school.link && school.link.trim() !== "" ? school.link : "#";
-
-    modalContent.innerHTML = `
-        <div class="modal-cover">
-            <img src="${school.image}" alt="${school.name}" onerror="this.src='q.jpeg'">
-            <span class="modal-cover-badge">
-                <i class="fa-solid fa-certificate"></i>
-                ${school.typeName}
-            </span>
-        </div>
-        
-        <div class="modal-content-body">
-            <h2 class="modal-school-name">${school.name}</h2>
-            <div class="modal-school-loc">
-                <i class="fa-solid fa-map-pin" style="color: #D9A72E;"></i>
-                <span>${school.location}</span>
-            </div>
-
-            <p style="font-size: 14px; color: #4A6361; line-height: 1.7; margin-bottom: 20px;">
-                ${school.description}
-            </p>
-
-            <div class="modal-info-grid">
-                <div class="modal-info-item">
-                    <strong>الرقم التعريفي (كود المدرسة):</strong>
-                    <span>${school.code}</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>الإدارة التعليمية:</strong>
-                    <span>إدارة السنبلاوين التعليمية</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>إجمالي الطلاب المقيدين:</strong>
-                    <span>${school.studentsCount}</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>الإدارة المسؤولة:</strong>
-                    <span>${school.principal}</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>الموقع الجغرافي:</strong>
-                    <span>${school.area}</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>حالة المنصة الذكية:</strong>
-                    <span style="color: ${isLive ? '#10B981' : '#D9A72E'};">
-                        ● ${isLive ? 'بوابة إلكترونية مستقلة مفعلة' : 'مدرجة بمنظومة الإدارة الموحدة'}
-                    </span>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 22px;">
-                <h4 style="font-size: 14px; font-weight: 800; color: #004C46; margin-bottom: 10px;">
-                    <i class="fa-solid fa-star" style="color: #D9A72E; margin-left: 6px;"></i>
-                    أبرز التجهيزات والمميزات:
-                </h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    ${school.features.map(f => `
-                        <span style="background: #F4F8F7; border: 1px solid #D8E7E4; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; color: #112826;">
-                            ✓ ${f}
-                        </span>
-                    `).join("")}
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                ${isLive ? `
-                    <a href="${siteUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="flex: 1; justify-content: center;">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        زيارة الموقع الإلكتروني للمدرسة
-                    </a>
-                ` : `
-                    <button class="btn-primary" onclick="alert('جاري إطلاق البوابة الرسمية لهذه المدرسة قريباً بتوجيه إدارة السنبلاوين');" style="flex: 1; justify-content: center;">
-                        <i class="fa-solid fa-bell"></i>
-                        طلب تفعيل منصة المدرسة
-                    </button>
-                `}
-                <button class="btn-secondary" onclick="closeSchoolModal()" style="color: #004C46; border-color: #D8E7E4; background: #F4F8F7;">
-                    إغلاق
-                </button>
-            </div>
-        </div>
-    `;
-
-    modal.classList.add("open");
-    document.body.style.overflow = "hidden";
-}
-
-function closeSchoolModal() {
-    const modal = document.getElementById("schoolModal");
-    if (!modal) return;
-    modal.classList.remove("open");
-    document.body.style.overflow = "auto";
-}
-
-// إعادة ضبط جميع الفلاتر
 function resetAllFilters() {
     filterState.searchQuery = "";
     filterState.category = "all";
@@ -577,12 +456,9 @@ function resetAllFilters() {
     renderSchools();
 }
 
-// تهيئة الأحداث والصفحة
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. عرض المدارس لأول مرة
     renderSchools();
 
-    // 2. البحث النصي التفاعلي
     const searchInput = document.getElementById("schoolSearch");
     const searchClear = document.getElementById("searchClearBtn");
 
@@ -608,13 +484,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. القوائم المنسدلة للتصفية
     const typeSelect = document.getElementById("typeFilter");
     if (typeSelect) {
         typeSelect.addEventListener("change", (e) => {
             filterState.category = e.target.value;
             
-            // مزامنة الأزرار السريعة (chips)
             document.querySelectorAll(".category-chip").forEach(chip => {
                 if (chip.getAttribute("data-category") === e.target.value) {
                     chip.classList.add("active");
@@ -643,7 +517,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. أزرار التصنيف السريعة (Filter Chips)
     document.querySelectorAll(".category-chip").forEach(chip => {
         chip.addEventListener("click", () => {
             document.querySelectorAll(".category-chip").forEach(c => c.classList.remove("active"));
@@ -660,7 +533,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 5. تبديل طريقة العرض (شبكة / قائمة)
     const viewGridBtn = document.getElementById("viewGridBtn");
     const viewListBtn = document.getElementById("viewListBtn");
 
@@ -680,34 +552,56 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 6. القائمة المتنقلة للشاشات الصغيرة (Mobile Menu)
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
+    const navBackdrop = document.getElementById("navBackdrop");
 
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener("click", () => {
-            navLinks.classList.toggle("open");
+    function closeMobileMenu() {
+        if (navLinks) navLinks.classList.remove("open");
+        if (navBackdrop) navBackdrop.classList.remove("show");
+        if (menuToggle) {
             const icon = menuToggle.querySelector("i");
             if (icon) {
-                icon.classList.toggle("fa-bars");
-                icon.classList.toggle("fa-xmark");
+                icon.classList.add("fa-bars");
+                icon.classList.remove("fa-xmark");
             }
-        });
+        }
+        document.body.classList.remove("menu-locked");
+    }
 
-        // إغلاق القائمة عند النقر على أي رابط
+    function toggleMobileMenu() {
+        if (!navLinks) return;
+        const isOpen = navLinks.classList.toggle("open");
+        if (navBackdrop) navBackdrop.classList.toggle("show", isOpen);
+        if (menuToggle) {
+            const icon = menuToggle.querySelector("i");
+            if (icon) {
+                icon.classList.toggle("fa-bars", !isOpen);
+                icon.classList.toggle("fa-xmark", isOpen);
+            }
+        }
+        document.body.classList.toggle("menu-locked", isOpen);
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener("click", toggleMobileMenu);
+    }
+
+    if (navBackdrop) {
+        navBackdrop.addEventListener("click", closeMobileMenu);
+    }
+
+    const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+    if (drawerCloseBtn) {
+        drawerCloseBtn.addEventListener("click", closeMobileMenu);
+    }
+
+    if (navLinks) {
         navLinks.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => {
-                navLinks.classList.remove("open");
-                const icon = menuToggle.querySelector("i");
-                if (icon) {
-                    icon.classList.add("fa-bars");
-                    icon.classList.remove("fa-xmark");
-                }
-            });
+            link.addEventListener("click", closeMobileMenu);
         });
     }
 
-    // 7. زر الصعود للأعلى (Back to Top)
     const backToTopBtn = document.getElementById("backToTop");
     if (backToTopBtn) {
         window.addEventListener("scroll", () => {
@@ -726,23 +620,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 8. إغلاق النافذة المنبثقة بالضغط على الخلفية أو مفتاح Escape
-    const schoolModal = document.getElementById("schoolModal");
-    if (schoolModal) {
-        schoolModal.addEventListener("click", (e) => {
-            if (e.target === schoolModal) {
-                closeSchoolModal();
-            }
-        });
-    }
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            closeSchoolModal();
-        }
-    });
-
-    // 9. ربط البحث القديم searchSchool إن تم استدعاؤه
     window.searchSchool = function() {
         const input = document.getElementById("schoolSearch");
         if (input) {
