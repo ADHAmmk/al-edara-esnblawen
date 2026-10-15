@@ -1,193 +1,531 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="البوابة الرسمية لإدارة السنبلاوين التعليمية - مديرية التربية والتعليم بالدقهلية. دليل شامل لجميع المدارس الثانوية والخدمات الإلكترونية.">
+    <meta name="keywords" content="إدارة السنبلاوين التعليمية, مدارس السنبلاوين, محافظة الدقهلية, وزارة التربية والتعليم, مدرسة السادات الثانوية بنين, دليل مدارس السنبلاوين">
+    <meta name="theme-color" content="#004C46">
     <link rel="shortcut icon" href="مدريه.png" type="image/x-icon">
     
+    <!-- Icons & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="edara.css">
-    <title>ادارة السنبلاوين التعليميه</title>
+    <title>إدارة السنبلاوين التعليمية | البوابة الرسمية ودليل المدارس</title>
 </head>
-<header>
-    <nav class="navbar">
-        <div class="imgs">
-        <img class="img1" title="اداره السنبلاوين التعليميه" src="مدريه.png" alt="">
-        <div>
-            <h2 style="font-size: 10px; text-shadow: 0 8px 15px  black;">وزارة التربيه والتعليم والتعليم الفني</h2>
-        <h2 class="dod">ادارة السنبلاوين التعليميه</h2>
-        <p class="p1">جميع المدارس تابعه للاداره</p>
-        </div>
-        
-    </div>
-        <ul>
-            <i class="fa-solid fa-house"></i>
-            <a href="" class="active"><li>الرئيسيه</li></a>
-            
-           <a href="" class="act"><li>عن الاداره</li></a> 
-            <a href="" class="act"><li>مدارس</li></a>
-           <a href="" class="act"><li>الخدمات الالكترونيه</li></a> 
-           <a href="" class="act"><li>اتصل بنا</li></a> 
-        </ul>
-    </nav>
-</header>
 <body>
-     <hr>
-    <section class="section-1">
-    <div class="div-imgs">
-        <img src="b3541166-b282-4128-807c-af8892e0a2d4-removebg-preview.png" alt="">
-        <div class="div-h1-2">
-        <h1 class="h11">اداره السنبلاوين التعليميه</h1>
-        <h2 class="h22">جميع مدارس الاداره في مكان واحد</h2>
-        <p class="div-p">من اجل تعليم افضل .. لمستقبل اكثر اشراقا</p>
+
+    <!-- الشريط العلوي للإشعارات والتواصل السريع -->
+    <div class="top-notice-bar">
+        <div class="notice-ticker">
+            <span class="notice-badge">
+                <i class="fa-solid fa-bullhorn"></i>
+                تنبيه عاجل
+            </span>
+            <span class="notice-text">
+                أهلاً بكم في البوابة الموحدة لإدارة السنبلاوين التعليمية - مديرية التربية والتعليم بمحافظة الدقهلية
+            </span>
+        </div>
+        <div class="top-bar-links">
+            <a href="tel:19368"><i class="fa-solid fa-phone"></i> الخط الساخن: 19368</a>
+            <a href="#about"><i class="fa-solid fa-clock"></i> مواعيد العمل: 8:00 ص - 2:30 م</a>
+            <a href="#contact"><i class="fa-solid fa-location-dot"></i> السنبلاوين - الدقهلية</a>
+        </div>
     </div>
-    </div>
+
+    <!-- ترويسة الصفحة وشريط الملاحة الرئيسي -->
+    <header class="header-main">
+        <nav class="navbar">
+            <div class="brand-section">
+                <div class="brand-logo-wrap">
+                    <img class="brand-logo" src="مدريه.png" alt="شعار مديرية التربية والتعليم بالدقهلية" title="مديرية التربية والتعليم بالدقهلية">
+                    <img class="brand-eagle" src="b3541166-b282-4128-807c-af8892e0a2d4-removebg-preview.png" alt="شعار النسر المصري" title="جمهورية مصر العربية">
+                </div>
+                <div class="brand-titles">
+                    <span class="sub-ministry">جمهورية مصر العربية • وزارة التربية والتعليم</span>
+                    <h1 class="main-title">إدارة السنبلاوين التعليمية</h1>
+                    <span class="tagline">مديرية التربية والتعليم بمحافظة الدقهلية</span>
+                </div>
+            </div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
+                <li><a href="#schools"><i class="fa-solid fa-school"></i> دليل المدارس</a></li>
+                <li><a href="#services"><i class="fa-solid fa-laptop-code"></i> الخدمات الإلكترونية</a></li>
+                <li><a href="#about"><i class="fa-solid fa-landmark"></i> عن الإدارة</a></li>
+                <li><a href="#contact"><i class="fa-solid fa-envelope"></i> اتصل بنا</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="#services" class="btn-header-cta">
+                    <i class="fa-solid fa-bolt"></i>
+                    الخدمات الذكية
+                </a>
+                <button type="button" class="menu-toggle" id="menuToggle" aria-label="تبديل القائمة">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- القسم الافتتاحي (Hero Section) -->
+    <section class="hero-section" id="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-pill">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    المنظومة الرقمية الرسمية لإدارة السنبلاوين التعليمية
+                </div>
+                <h2 class="hero-title">
+                    جميع مدارس السنبلاوين التعليمية <span>في منصة ذكية واحدة</span>
+                </h2>
+                <p class="hero-desc">
+                    دليلك المتكامل لاستكشاف المدارس الثانوية، الرسمية للغات، والفنية التابعة للإدارة، مع وصول مباشر لمنصات المدارس الرقمية، والخدمات الإدارية والتعليمية للطلاب والمعلمين وأولياء الأمور.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#schools" class="btn-primary">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        استكشف دليل المدارس
+                    </a>
+                    <a href="#services" class="btn-secondary">
+                        <i class="fa-solid fa-grid-2"></i>
+                        بوابة الخدمات الإلكترونية
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-emblem-wrap">
+                <div class="hero-emblem-glow"></div>
+                <div class="hero-emblem-card">
+                    <img src="b3541166-b282-4128-807c-af8892e0a2d4-removebg-preview.png" alt="شعار النسر">
+                    <h4>شعار الجودة والريادة</h4>
+                    <p>من أجل تعليم أفضل .. لمستقبل مشرق</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="section-inpat">
-        <div class="search-box">
-    <input type="text" id="schoolSearch" placeholder="ابحث باسم المدرسة ...">
-    <button onclick="searchSchool()">
-        <i class="fa-solid fa-magnifying-glass" style="padding-bottom: 10px;"></i>
+    <!-- شريط الإحصائيات والأرقام القياسية -->
+    <div class="stats-ribbon">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-school"></i>
+                </div>
+                <div>
+                    <div class="stat-number">18+</div>
+                    <div class="stat-label">مدرسة ثانوية ورسمية</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                    <div class="stat-number">+25,000</div>
+                    <div class="stat-label">طالب وطالبة بالثانوي</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <div>
+                    <div class="stat-number">+2,100</div>
+                    <div class="stat-label">معلم وإداري متميز</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">ربط وتطوير تكنولوجي</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم البحث والفلترة المتقدمة للمدارس -->
+    <section class="filter-section" id="schools">
+        <div class="filter-card">
+            <div class="filter-header">
+                <div class="filter-title">
+                    <i class="fa-solid fa-sliders"></i>
+                    محرك البحث والتصفية الذكي للمدارس
+                </div>
+                <div class="filter-count-badge">
+                    المدارس المعروضة: <span id="schoolsCount">18</span> مدرسة
+                </div>
+            </div>
+
+            <div class="filter-controls-row">
+                <!-- حقل البحث الفوري -->
+                <div class="search-input-wrap">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="schoolSearch" placeholder="ابحث باسم المدرسة أو القرية أو الكود..." autocomplete="off">
+                    <button type="button" class="search-clear-btn" id="searchClearBtn" title="مسح البحث">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- تصفية حسب النوع -->
+                <div class="select-wrap">
+                    <select id="typeFilter" class="custom-select" aria-label="تصفية حسب نوع المدرسة">
+                        <option value="all">🏫 جميع أنواع المدارس</option>
+                        <option value="boys">ثانوي عام - بنين</option>
+                        <option value="girls">ثانوي عام - بنات</option>
+                        <option value="mixed">ثانوي عام - مشترك</option>
+                        <option value="languages">رسمي لغات - تجريبي</option>
+                        <option value="vocational">تعليم فني وفندقي وزراعي</option>
+                    </select>
+                </div>
+
+                <!-- تصفية حسب النطاق الجغرافي -->
+                <div class="select-wrap">
+                    <select id="areaFilter" class="custom-select" aria-label="تصفية حسب المنطقة">
+                        <option value="all">📍 جميع المناطق بالإدارة</option>
+                        <option value="السنبلاوين المدينة">السنبلاوين (المدينة)</option>
+                        <option value="قرى السنبلاوين">القرى والوحدات المحلية</option>
+                    </select>
+                </div>
+
+                <!-- خيارات العرض (شبكة / قائمة) والترتيب -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="select-wrap">
+                        <select id="sortFilter" class="custom-select" style="min-width: 140px;" aria-label="ترتيب النتائج">
+                            <option value="default">الترتيب الافتراضي</option>
+                            <option value="name-asc">الاسم (أ - ي)</option>
+                            <option value="name-desc">الاسم (ي - أ)</option>
+                        </select>
+                    </div>
+
+                    <div class="view-toggle-btns">
+                        <button type="button" class="view-btn active" id="viewGridBtn" title="عرض شبكي">
+                            <i class="fa-solid fa-grip"></i>
+                        </button>
+                        <button type="button" class="view-btn" id="viewListBtn" title="عرض قائمة">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار التصنيف السريعة (Filter Chips) -->
+            <div class="filter-tags-row">
+                <span class="filter-tags-label">
+                    <i class="fa-solid fa-tags"></i>
+                    تصنيف سريع:
+                </span>
+                <button type="button" class="category-chip active" data-category="all">
+                    الكل
+                </button>
+                <button type="button" class="category-chip" data-category="boys">
+                    <i class="fa-solid fa-person"></i>
+                    ثانوي بنين
+                </button>
+                <button type="button" class="category-chip" data-category="girls">
+                    <i class="fa-solid fa-person-dress"></i>
+                    ثانوي بنات
+                </button>
+                <button type="button" class="category-chip" data-category="mixed">
+                    <i class="fa-solid fa-people-group"></i>
+                    ثانوي مشترك
+                </button>
+                <button type="button" class="category-chip" data-category="languages">
+                    <i class="fa-solid fa-language"></i>
+                    رسمي لغات وتجريبي
+                </button>
+                <button type="button" class="category-chip" data-category="vocational">
+                    <i class="fa-solid fa-gears"></i>
+                    تعليم فني وفندقي
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- شبكة بطاقات المدارس -->
+    <main class="schools-section">
+        <div class="section-title-wrap">
+            <div class="section-heading-group">
+                <span class="section-subtitle">
+                    <i class="fa-solid fa-circle-check"></i>
+                    صروح التعليم الثانوي المعتمدة
+                </span>
+                <h3 class="section-main-title">
+                    <i class="fa-solid fa-building-columns"></i>
+                    قائمة المدارس الثانوية التابعة للإدارة
+                </h3>
+            </div>
+        </div>
+
+        <!-- حاوية المدارس الديناميكية (يتم ملؤها عبر اداره.js) -->
+        <div class="schools-grid" id="schoolsGrid"></div>
+    </main>
+
+    <!-- قسم الخدمات الإلكترونية الذكية -->
+    <section class="services-section" id="services">
+        <div class="services-container">
+            <div class="section-title-wrap">
+                <div class="section-heading-group">
+                    <span class="section-subtitle">
+                        <i class="fa-solid fa-sparkles"></i>
+                        التحول الرقمي وتيسير المعاملات
+                    </span>
+                    <h3 class="section-main-title">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        بوابة الخدمات الإلكترونية بالإدارة
+                    </h3>
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <!-- خدمة 1 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                    </div>
+                    <h4 class="service-title">نتائج وتنسيق الشهادات</h4>
+                    <p class="service-desc">
+                        الاستعلام الفوري عن نتائج الامتحانات للشهادتين الإعدادية والثانوية وتنسيق القبول بالمدارس إلكترونياً.
+                    </p>
+                    <a href="https://el-sadat-school.vercel.app/" target="_blank" class="service-link">
+                        الدخول للمنصة <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- خدمة 2 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    </div>
+                    <h4 class="service-title">التحويلات المدرسية</h4>
+                    <p class="service-desc">
+                        تقديم ومتابعة طلبات نقل وتحويل الطلاب بين المدارس الثانوية داخل وخارج مركز السنبلاوين.
+                    </p>
+                    <a href="javascript:alert('بوابة التحويلات الإلكترونية تفتح وفق المواعيد الرسمية للمديرية');" class="service-link">
+                        تقديم طلب تحويل <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- خدمة 3 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+                    <h4 class="service-title">خدمات المعلم والإداري</h4>
+                    <p class="service-desc">
+                        صحيفة الأحوال الإلكترونية للمعلم، إخطارات الترقيات، وخطط التطوير التكنولوجي والتدريب المستمر.
+                    </p>
+                    <a href="javascript:alert('يرجى تسجيل الدخول بالبريد الموحد للمعلم');" class="service-link">
+                        صحيفة الأحوال <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- خدمة 4 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h4 class="service-title">منظومة الشكاوى والمقترحات</h4>
+                    <p class="service-desc">
+                        قناة اتصال مباشرة مع مدير عام الإدارة وخدمة المواطنين لمتابعة الشكاوى والحلول خلال 48 ساعة.
+                    </p>
+                    <a href="#contact" class="service-link">
+                        إرسال شكوى أو مقترح <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- خدمة 5 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <h4 class="service-title">جداول الامتحانات والتقويم</h4>
+                    <p class="service-desc">
+                        جداول اختبارات الشهور ونصف ونهاية العام لكافة صفوف المرحلة الثانوية العامة والفنية.
+                    </p>
+                    <a href="javascript:alert('تتاح الجداول الرسمية فور اعتمادها من وكيل الوزارة');" class="service-link">
+                        تحميل الجداول <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- خدمة 6 -->
+                <div class="service-card">
+                    <div class="service-icon-wrap">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h4 class="service-title">رعاية الموهوبين والأنشطة</h4>
+                    <p class="service-desc">
+                        التسجيل في المسابقات الثقافية والعلمية، ودوري أوائل الطلبة، والمعارض الفنية على مستوى الإدارة.
+                    </p>
+                    <a href="javascript:alert('باب التسجيل في مسابقات العام الدراسي مفتوح');" class="service-link">
+                        استعراض المسابقات <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم عن الإدارة والرؤية التعليمية -->
+    <section class="about-section" id="about">
+        <div class="about-card">
+            <div class="about-content">
+                <span class="section-subtitle">
+                    <i class="fa-solid fa-landmark"></i>
+                    الصرح الإداري والتربوي
+                </span>
+                <h3 class="section-main-title" style="margin-bottom: 14px;">
+                    عن إدارة السنبلاوين التعليمية
+                </h3>
+                <p style="color: #4A6361; line-height: 1.8; font-size: 14.5px;">
+                    تعد إدارة السنبلاوين التعليمية من كبرى الإدارات التعليمية بمحافظة الدقهلية، وتضم نسيجاً متكاملاً من المدارس المتميزة التي تخدم قطاعاً سكانياً واسعاً يضم مدينة السنبلاوين وأكثر من 60 قرية وتابعا. نحرص على تسخير أحدث الوسائل التكنولوجية لدعم طلابنا ومعلمينا وتوفير بيئة تعليمية ترتقي بقدرات أبنائنا وبناتنا.
+                </p>
+
+                <div class="about-features">
+                    <div class="about-feat-item">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>بنية تحتية وشبكات ألياف ضوئية</span>
+                    </div>
+                    <div class="about-feat-item">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>شاشات وفصول تفاعلية ذكية</span>
+                    </div>
+                    <div class="about-feat-item">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>مراكز تدريب وتطوير تكنولوجي معتمدة</span>
+                    </div>
+                    <div class="about-feat-item">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>رعاية متكاملة للفائقين والمبتكرين</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <a href="#schools" class="btn-primary">
+                        <i class="fa-solid fa-list-check"></i>
+                        تصفح جميع المدارس
+                    </a>
+                    <a href="tel:0506690123" class="btn-secondary" style="color: #004C46; border-color: #D8E7E4; background: #F4F8F7;">
+                        <i class="fa-solid fa-phone"></i>
+                        الاتصال بالإدارة
+                    </a>
+                </div>
+            </div>
+
+            <div class="about-image-side">
+                <img src="Sunlit Egyptian Education Administration Building (1).png" alt="مبنى الإدارة التعليمية">
+                <div class="about-overlay-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div>
+                        <h5>مقر إدارة السنبلاوين التعليمية</h5>
+                        <p>مدينة السنبلاوين - شارع مجلس المدينة - محافظة الدقهلية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة (Footer) -->
+    <footer class="footer-main" id="contact">
+        <div class="footer-container">
+            <!-- العمود 1: معلومات الإدارة -->
+            <div class="footer-col footer-brand-info">
+                <div class="brand-section">
+                    <div class="brand-logo-wrap">
+                        <img class="brand-logo" src="مدريه.png" alt="شعار الإدارة">
+                        <img class="brand-eagle" src="b3541166-b282-4128-807c-af8892e0a2d4-removebg-preview.png" alt="شعار النسر">
+                    </div>
+                </div>
+                <p>
+                    البوابة الرسمية المعتمدة لإدارة السنبلاوين التعليمية - مديرية التربية والتعليم بالدقهلية. نسعى دائماً لتقديم خدمات تعليمية رقمية راقية تلبي تطلعات مجتمعنا ومستقبل أجيالنا.
+                </p>
+            </div>
+
+            <!-- العمود 2: روابط سريعة -->
+            <div class="footer-col">
+                <h4>روابط سريعة</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#hero"><i class="fa-solid fa-chevron-left"></i> الصفحة الرئيسية</a></li>
+                    <li><a href="#schools"><i class="fa-solid fa-chevron-left"></i> دليل المدارس الثانوية</a></li>
+                    <li><a href="#services"><i class="fa-solid fa-chevron-left"></i> بوابة الخدمات الإلكترونية</a></li>
+                    <li><a href="#about"><i class="fa-solid fa-chevron-left"></i> الرؤية والرسالة التربوية</a></li>
+                    <li><a href="https://el-sadat-school.vercel.app/" target="_blank"><i class="fa-solid fa-chevron-left"></i> موقع مدرسة السادات بنين</a></li>
+                </ul>
+            </div>
+
+            <!-- العمود 3: بوابات رسمية تابعة للوزارة -->
+            <div class="footer-col">
+                <h4>منصات تعليمية رسمية</h4>
+                <ul class="footer-links-list">
+                    <li><a href="https://moe.gov.eg/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> وزارة التربية والتعليم</a></li>
+                    <li><a href="https://www.ekb.eg/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> بنك المعرفة المصري</a></li>
+                    <li><a href="https://madrasetna.moe.gov.eg/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> منصة مدرستنا التعليمية</a></li>
+                    <li><a href="https://emis.gov.eg/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> مركز معلومات الوزارة (EMIS)</a></li>
+                </ul>
+            </div>
+
+            <!-- العمود 4: التواصل والمقر -->
+            <div class="footer-col">
+                <h4>التواصل ومقر الإدارة</h4>
+                <div class="footer-contact-list">
+                    <div class="footer-contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>السنبلاوين - بالقرب من مجلس المدينة - محافظة الدقهلية</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>الخط الساخن للوزارة: 19368</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>edara.sinbillawin@dakahliya.gov.eg</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>أيام العمل: الأحد إلى الخميس (8:00 ص - 2:30 م)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-inner">
+                <div>
+                    جميع الحقوق محفوظة © 2026 <span>إدارة السنبلاوين التعليمية</span> - مديرية التربية والتعليم بمحافظة الدقهلية.
+                </div>
+                <div>
+                    تصميم وتطوير البوابة التعليمية الذكية 🎓
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- نافذة منبثقة تفاعلية لتفاصيل المدرسة -->
+    <div class="modal-backdrop" id="schoolModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-dialog">
+            <button type="button" class="modal-close-btn" onclick="closeSchoolModal()" aria-label="إغلاق النافذة">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalDynamicContent"></div>
+        </div>
+    </div>
+
+    <!-- زر الصعود للأعلى السريع -->
+    <button type="button" class="back-to-top" id="backToTop" title="الرجوع لأعلى الصفحة" aria-label="الرجوع للأعلى">
+        <i class="fa-solid fa-arrow-up"></i>
     </button>
-</div>
 
-<div id="results"></div>
-  <div class="input-2"> 
-   <select class="select" id="">⌄
-    <option value="">🏫 اختر المدرسه</option>
-    <option value="">مدرسه السادات الثانوي بنين</option> 
-   </select>
-  </div>
-
-  <div>
-    <select class="select" id="">
-        <option>🎓ختر المرحله التعليميه</option>
-        <option>المرحله الثانويه</option>
-    </select>
-  </div>
-
-  <div>
-    <select class="select" id="">
-        <option>📍اختر الاداره</option>
-        <option>ادارة السنبلاوين التعليميه</option>
-    </select>
-  </div>
-    </section>
-     
-  <section class="ffdd">
-
-    <div class="n">
-    <div class="q">
-        <i class="fa-solid fa-school"></i>
-    <h2 class="hg">قائمة المدارس الثانويه</h2>
-</div>
-<p class="hq">جميع المدارس الثانويه  ادارة السنبلاوين التعليميه</p>
- </div>
-
- <div class="zz">
-    <i  class="fa-solid fa-building-columns"></i>
-    <p style="font-weight: 700; font-size: 14px; ">عدد المدارس الثانويه: <span style="color: #D9A72E;">18</span> مدرسه</p>
- </div>
-    </section>
-     <section class="words">
-      <div class="word">
-    
-            <div style="line-height: 28px;">
-                <div >
-        
-        <h3 class="fope">مدرسه السادات ثانوي بنين</h3>
-    </div>
-    
-        <div class="tots">
-        <p class="tot">ثانوي-بنين</p>
-
-       
-
-    </div>
-    <div>
-        <p class="sssa">📍السنبلاوين</p>
-    </div>
-    <a href="https://el-sadat-school.vercel.app/"><button><i class="fa-solid fa-link"></i>دخول الموقع</button></a>
-    </div>
-        <img class="img-s" src="q.jpeg" alt="">
-        
-     </div>
-
-         <div class="word">
-    
-            <div style="line-height: 28px;">
-                <div >
-        
-        <h3 class="fope">المقاطعة الثانوية المشتركة</h3>
-    </div>
-    
-        <div class="tots" style="width: 70px; padding-left: 15px;">
-        <p class="tot">ثانوي-مشتركه</p>
-
-       
-
-    </div>
-    <div>
-        <p class="sssa">📍السنبلاوين</p>
-    </div>
-    <a href=""><button><i class="fa-solid fa-link"></i>دخول الموقع</button></a>
-    </div>
-        <img class="img-s" src="a.jpeg" alt="">
-        
-     </div>
-
-         <div class="word">
-    
-            <div style="line-height: 28px;">
-                <div >
-        
-        <h3 class="fope">احمد لطفى السيد الثانوية بنين</h3>
-    </div>
-    
-        <div class="tots">
-        <p class="tot">ثانوي-بنين</p>
-
-       
-
-    </div>
-    <div>
-        <p class="sssa">📍السنبلاوين</p>
-    </div>
-    <a href=""><button><i class="fa-solid fa-link"></i>دخول الموقع</button></a>
-    </div>
-        <img class="img-s" src="i.jpeg" alt="">
-        
-     </div>
-
-         <div class="word">
-    
-            <div style="line-height: 28px;">
-                <div >
-        
-        <h3 class="fope" style="font-size: 10.4px;">السنبلاوين الرسمية للغات المشتركة</h3>
-    </div>
-    
-        <div class="tots" style="width: 70px; padding-left: 15px;">
-        <p class="tot">ثانوي-مشتركه</p>
-
-       
-
-    </div>
-    <div>
-        <p class="sssa">📍السنبلاوين</p>
-    </div>
-    <a href=""><button><i class="fa-solid fa-link"></i>دخول الموقع</button></a>
-    </div>
-        <img class="img-s" src="u.jpeg" alt="">
-        
-     </div>
-
-    
-
-     </section>
-
-    <br>
+    <!-- كود الجافاسكربت التفاعلي -->
+    <script src="اداره.js"></script>
 </body>
 </html>
