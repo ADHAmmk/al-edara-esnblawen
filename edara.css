@@ -202,7 +202,7 @@ button, input, select {
 }
 
 .brand-eagle {
-    height: 44px;
+    height: 54px;
     width: auto;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     flex-shrink: 0;
@@ -489,11 +489,11 @@ button, input, select {
     min-height: 44px;
 }
 
-a{
+a.awas{
     position: relative;
 }
 
-a::after{
+a.awas::after{
 position: absolute;
 content: "";
 right: 0;
@@ -1014,6 +1014,16 @@ a:hover::after{
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.card-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.card-title a:hover {
+    color: var(--gold-hover);
 }
 
 .card-meta-list {
@@ -2054,7 +2064,7 @@ a:hover::after{
     }
 
     .brand-eagle {
-        height: 30px;
+        height: 39px;
     }
 
     .main-title {
