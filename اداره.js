@@ -186,12 +186,27 @@
                     // Keep mobile header and mobile CTA, replace middle items
                     const mobileHeader = navUl.querySelector('.mobile-drawer-header');
                     const mobileCTA = navUl.querySelector('.mobile-drawer-cta');
-                    const newLinks = adminNav.map(link => `
+                    const homeLink = adminNav.find(link => link.href === '#hero');
+                    const homeNavItem = homeLink ? `
+                        <li><a href="${homeLink.href}" class="active">
+                            <i class="fa-solid ${homeLink.icon || 'fa-house'}"></i> ${homeLink.text}
+                        </a></li>
+                    ` : `
+                        <li><a href="#hero" class="active">
+                            <i class="fa-solid fa-house"></i> الرئيسية
+                        </a></li>
+                    `;
+                    const newLinks = adminNav.filter(link => link.href !== '#hero').map(link => `
                         <li><a href="${link.href}" class="awas">
                             <i class="fa-solid ${link.icon || 'fa-circle'}"></i> ${link.text}
                         </a></li>
                     `).join('');
-                    navUl.innerHTML = (mobileHeader ? mobileHeader.outerHTML : '') + newLinks + (mobileCTA ? mobileCTA.outerHTML : '');
+                    const dashboardLink = adminNav.some(link => link.href === 'admin.html') ? '' : `
+                        <li><a href="admin.html" class="awas">
+                            <i class="fa-solid fa-gauge-high"></i> لوحه التحكم
+                        </a></li>
+                    `;
+                    navUl.innerHTML = (mobileHeader ? mobileHeader.outerHTML : '') + homeNavItem + newLinks + dashboardLink + (mobileCTA ? mobileCTA.outerHTML : '');
                 }
             }
 
