@@ -1,5 +1,242 @@
 
-const schoolsData = [
+/* ============================================================
+   🎛️ ADMIN PANEL INTEGRATION
+   يقرأ الموقع البيانات من لوحة التحكم (localStorage) تلقائياً
+   ============================================================ */
+(function applyAdminChanges() {
+    // Apply text content changes
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const content = JSON.parse(localStorage.getItem('admin_content') || '{}');
+
+            // Helper
+            const setText = (selector, value, attr) => {
+                if (!value) return;
+                const el = document.querySelector(selector);
+                if (!el) return;
+                if (attr) el.setAttribute(attr, value);
+                else el.textContent = value;
+            };
+
+            const setHtml = (selector, value) => {
+                if (!value) return;
+                const el = document.querySelector(selector);
+                if (el) el.innerHTML = value;
+            };
+
+            if (content.noticeText) setText('.notice-text', content.noticeText);
+            if (content.noticeBadgeText) {
+                const badge = document.querySelector('.notice-badge');
+                if (badge) badge.innerHTML = `<i class="fa-solid fa-bullhorn"></i> ${content.noticeBadgeText}`;
+            }
+            if (content.workHours) {
+                const wh = document.querySelector('.top-bar-links a:first-child');
+                if (wh) wh.innerHTML = `<i class="fa-solid fa-clock"></i> مواعيد العمل: ${content.workHours}`;
+            }
+            if (content.locationText) {
+                const loc = document.querySelector('.top-bar-links a:last-child');
+                if (loc) loc.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${content.locationText}`;
+            }
+            if (content.heroPill) setText('.hero-pill', content.heroPill);
+            if (content.heroTitle || content.heroTitleSpan) {
+                const titleEl = document.querySelector('.hero-title');
+                if (titleEl) {
+                    const t = content.heroTitle || 'جميع مدارس السنبلاوين التعليمية ';
+                    const s = content.heroTitleSpan || 'في منصة ذكية واحدة';
+                    titleEl.innerHTML = `${t}<span>${s}</span>`;
+                }
+            }
+            if (content.heroDesc) setText('.hero-desc', content.heroDesc);
+            if (content.heroBtnPrimary) {
+                const btn = document.querySelector('.hero-buttons .btn-primary');
+                if (btn) btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> ${content.heroBtnPrimary}`;
+            }
+            if (content.heroBtnSecondary) {
+                const btn = document.querySelector('.hero-buttons .btn-secondary');
+                if (btn) btn.innerHTML = `<i class="fa-solid fa-grid-2"></i> ${content.heroBtnSecondary}`;
+            }
+            if (content.emblumTitle) {
+                const el = document.querySelector('.hero-emblem-card h4');
+                if (el) el.textContent = content.emblumTitle;
+            }
+            if (content.emblumDesc) {
+                const el = document.querySelector('.hero-emblem-card p');
+                if (el) el.textContent = content.emblumDesc;
+            }
+            if (content.subMinistry) setText('.sub-ministry', content.subMinistry);
+            if (content.mainTitle) setText('.main-title', content.mainTitle);
+            if (content.tagline) setText('.tagline', content.tagline);
+            if (content.pageTitle) document.title = content.pageTitle;
+            if (content.schoolsSectionSub) {
+                const els = document.querySelectorAll('.section-subtitle');
+                if (els[0]) els[0].innerHTML = `<i class="fa-solid fa-circle-check"></i> ${content.schoolsSectionSub}`;
+            }
+            if (content.schoolsSectionMain) {
+                const els = document.querySelectorAll('.section-main-title');
+                if (els[0]) els[0].innerHTML = `<i class="fa-solid fa-building-columns"></i> ${content.schoolsSectionMain}`;
+            }
+            if (content.filterTitle) {
+                const el = document.querySelector('.filter-title');
+                if (el) el.innerHTML = `<i class="fa-solid fa-sliders"></i> ${content.filterTitle}`;
+            }
+            if (content.servicesSectionSub) {
+                const els = document.querySelectorAll('.section-subtitle');
+                if (els[1]) els[1].innerHTML = `<i class="fa-solid fa-sparkles"></i> ${content.servicesSectionSub}`;
+            }
+            if (content.servicesSectionMain) {
+                const els = document.querySelectorAll('.section-main-title');
+                if (els[1]) els[1].innerHTML = `<i class="fa-solid fa-laptop-code"></i> ${content.servicesSectionMain}`;
+            }
+            if (content.ctaBtnText) {
+                const btn = document.querySelector('.btn-header-cta');
+                if (btn) btn.innerHTML = `<i class="fa-solid fa-bolt"></i> ${content.ctaBtnText}`;
+            }
+            if (content.ctaBtnLink) {
+                const btn = document.querySelector('.btn-header-cta');
+                if (btn) btn.href = content.ctaBtnLink;
+            }
+            if (content.aboutSub) {
+                const el = document.querySelector('.about-section .section-subtitle');
+                if (el) el.innerHTML = `<i class="fa-solid fa-landmark"></i> ${content.aboutSub}`;
+            }
+            if (content.aboutTitle) {
+                const el = document.querySelector('.about-section .section-main-title');
+                if (el) el.textContent = content.aboutTitle;
+            }
+            if (content.aboutDesc) {
+                const el = document.querySelector('.about-content > p');
+                if (el) el.textContent = content.aboutDesc;
+            }
+            if (content.aboutAddress) {
+                const el = document.querySelector('.about-overlay-card p');
+                if (el) el.textContent = content.aboutAddress;
+            }
+            if (content.aboutHQTitle) {
+                const el = document.querySelector('.about-overlay-card h5');
+                if (el) el.textContent = content.aboutHQTitle;
+            }
+            if (content.footerBrandDesc) {
+                const el = document.querySelector('.footer-brand-info > p');
+                if (el) el.textContent = content.footerBrandDesc;
+            }
+            if (content.footerCopyright) {
+                const el = document.querySelector('.footer-bottom');
+                if (el) {
+                    const credEl = el.querySelector('.footer-bottom-inner > div:last-child');
+                    if (credEl) credEl.textContent = content.footerCopyright;
+                }
+            }
+
+            // About features
+            const aboutFeatures = JSON.parse(localStorage.getItem('admin_aboutFeatures') || 'null');
+            if (aboutFeatures && Array.isArray(aboutFeatures)) {
+                const container = document.querySelector('.about-features');
+                if (container) {
+                    container.innerHTML = aboutFeatures.map(f => `
+                        <div class="about-feat-item">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span>${f}</span>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Stats ribbon
+            const adminStats = JSON.parse(localStorage.getItem('admin_stats') || 'null');
+            if (adminStats && Array.isArray(adminStats)) {
+                const grid = document.querySelector('.stats-grid');
+                if (grid) {
+                    grid.innerHTML = adminStats.map(stat => `
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fa-solid ${stat.icon}"></i></div>
+                            <div>
+                                <div class="stat-number">${stat.number}</div>
+                                <div class="stat-label">${stat.label}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Services section
+            const adminServices = JSON.parse(localStorage.getItem('admin_services') || 'null');
+            if (adminServices && Array.isArray(adminServices)) {
+                const grid = document.querySelector('.services-grid');
+                if (grid) {
+                    grid.innerHTML = adminServices.map(sv => `
+                        <div class="service-card">
+                            <div class="service-icon-wrap">
+                                <i class="fa-solid ${sv.icon}"></i>
+                            </div>
+                            <h4 class="service-title">${sv.title}</h4>
+                            <p class="service-desc">${sv.desc}</p>
+                            <a href="${sv.link}" target="_blank" rel="noopener noreferrer" class="service-link">
+                                ${sv.linkText} <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Navigation links
+            const adminNav = JSON.parse(localStorage.getItem('admin_navLinks') || 'null');
+            if (adminNav && Array.isArray(adminNav)) {
+                const navUl = document.querySelector('.nav-links');
+                if (navUl) {
+                    // Keep mobile header and mobile CTA, replace middle items
+                    const mobileHeader = navUl.querySelector('.mobile-drawer-header');
+                    const mobileCTA = navUl.querySelector('.mobile-drawer-cta');
+                    const newLinks = adminNav.map(link => `
+                        <li><a href="${link.href}" class="awas">
+                            <i class="fa-solid ${link.icon || 'fa-circle'}"></i> ${link.text}
+                        </a></li>
+                    `).join('');
+                    navUl.innerHTML = (mobileHeader ? mobileHeader.outerHTML : '') + newLinks + (mobileCTA ? mobileCTA.outerHTML : '');
+                }
+            }
+
+            // Footer quick links
+            const footerQL = JSON.parse(localStorage.getItem('admin_footerQuickLinks') || 'null');
+            if (footerQL && Array.isArray(footerQL)) {
+                const ul = document.querySelector('.footer-links-list');
+                if (ul) {
+                    ul.innerHTML = footerQL.map(link => `
+                        <li><a href="${link.href}" ${link.href.startsWith('http') ? 'target="_blank"' : ''}>
+                            <i class="fa-solid fa-chevron-left"></i> ${link.text}
+                        </a></li>
+                    `).join('');
+                }
+            }
+
+            // Footer platforms
+            const footerPlatforms = JSON.parse(localStorage.getItem('admin_footerPlatforms') || 'null');
+            if (footerPlatforms && Array.isArray(footerPlatforms)) {
+                const uls = document.querySelectorAll('.footer-links-list');
+                if (uls[1]) {
+                    uls[1].innerHTML = footerPlatforms.map(link => `
+                        <li><a href="${link.href}" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> ${link.text}
+                        </a></li>
+                    `).join('');
+                }
+            }
+
+        } catch(e) {
+            console.warn('Admin integration error:', e);
+        }
+    });
+})();
+
+// ============================================================
+//  Load schools from admin panel if available
+// ============================================================
+let schoolsData = (function() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('admin_schools'));
+        if (saved && Array.isArray(saved) && saved.length > 0) return saved;
+    } catch(e) {}
+    return null;
+})() || [
     {
         id: 1,
         name: "مدرسة السادات الثانوية بنين",
@@ -420,6 +657,8 @@ function renderSchools() {
     container.className = `schools-grid ${filterState.viewMode === "list" ? "list-view" : ""}`;
     container.innerHTML = filtered.map(school => renderSchoolCard(school)).join("");
 }
+
+
 
 function openSchoolModal(schoolId) {}
 function closeSchoolModal() {}

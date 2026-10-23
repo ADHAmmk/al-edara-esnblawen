@@ -394,6 +394,7 @@ function generateHtml(school, index) {
                 </div>
                 <div class="brand-info">
                     <h1>${school.name}</h1>
+                    <span>كود المنظومة الإلكترونية: ${school.code}</span>
                 </div>
             </div>
 
@@ -405,6 +406,7 @@ function generateHtml(school, index) {
                 <li><a href="#hero" class="nav-link active"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
                 <li><a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> عن المدرسة</a></li>
                 <li><a href="#facilities" class="nav-link"><i class="fa-solid fa-laptop-code"></i> المعامل والمرافق</a></li>
+                <li><a href="#schedule" class="nav-link"><i class="fa-solid fa-calendar-days"></i> الجدول المدرسي</a></li>
                 <li><a href="#services" class="nav-link"><i class="fa-solid fa-bolt"></i> الخدمات الرقمية</a></li>
                 <li>
                     <a href="../index.html#schools" class="btn-primary-action">
@@ -439,6 +441,10 @@ function generateHtml(school, index) {
                         <a href="#services" class="btn-hero-primary">
                             <i class="fa-solid fa-id-card-clip"></i>
                             الخدمات الإلكترونية للطلاب
+                        </a>
+                        <a href="#schedule" class="btn-hero-secondary">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            جدول الحصص والتطبيقات
                         </a>
                     </div>
 
@@ -605,6 +611,56 @@ function generateHtml(school, index) {
     </section>
 
 
+    <section class="section-pad" id="schedule" style="background: #F1F6F5;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill"><i class="fa-solid fa-calendar-check"></i> الخطة الدراسية</span>
+                <h3 class="section-title">الجدول الدراسي والتطبيقات الأسبوعية</h3>
+                <p class="section-desc">استعرض مواعيد الحصص والتطبيقات العملية والمراجعات الأسبوعية للفصول</p>
+            </div>
+
+            <div class="schedule-box">
+                <div class="schedule-tabs">
+                    <button class="tab-btn active" data-day="sun">الأحد</button>
+                    <button class="tab-btn" data-day="mon">الإثنين</button>
+                    <button class="tab-btn" data-day="tue">الثلاثاء</button>
+                    <button class="tab-btn" data-day="wed">الأربعاء</button>
+                    <button class="tab-btn" data-day="thu">الخميس</button>
+                </div>
+                <div class="schedule-day-content" data-day="sun">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى (8:00 - 8:45)</th><th>الحصة الثانية (8:45 - 9:30)</th><th>الحصة الثالثة (9:45 - 10:30)</th><th>الحصة الرابعة (10:30 - 11:15)</th><th>الحصة الخامسة (11:30 - 12:15)</th><th>الحصة السادسة (12:15 - 1:00)</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الرياضيات / الجبر</span></td><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">الفيزياء / الكيمياء</span></td><td><span class="badge-subject">تاريخ / جغرافيا</span></td><td><span class="badge-subject">حاسب آلي وتكنولوجيا</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="mon" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى (8:00 - 8:45)</th><th>الحصة الثانية (8:45 - 9:30)</th><th>الحصة الثالثة (9:45 - 10:30)</th><th>الحصة الرابعة (10:30 - 11:15)</th><th>الحصة الخامسة (11:30 - 12:15)</th><th>الحصة السادسة (12:15 - 1:00)</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الأحياء / الجيولوجيا</span></td><td><span class="badge-subject">التطبيقات والتقييم الأسبوعي</span></td><td><span class="badge-subject">اللغة الأجنبية الثانية</span></td><td><span class="badge-subject">تربية رياضية وصحية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="tue" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">الرياضيات</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الفيزياء</span></td><td><span class="badge-subject">التاريخ</span></td><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">نشاط تربوي</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="wed" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">الكيمياء</span></td><td><span class="badge-subject">اللغة الأجنبية</span></td><td><span class="badge-subject">الرياضيات</span></td><td><span class="badge-subject">الأحياء</span></td><td><span class="badge-subject">تطبيقات عملية</span></td><td><span class="badge-subject">تربية رياضية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="thu" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">المراجعة الشاملة</span></td><td><span class="badge-subject">أداء التقييم الأسبوعي</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">اللغة الأجنبية</span></td><td><span class="badge-subject">دوري أوائل الفصول</span></td><td><span class="badge-subject">أنشطة كشفية ورياضية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section-pad" id="services">
         <div class="container">
             <div class="section-header">
@@ -750,6 +806,7 @@ function generateHtml(school, index) {
                     <ul class="footer-links">
                         <li><a href="#about"><i class="fa-solid fa-angle-left"></i> الرؤية والرسالة</a></li>
                         <li><a href="#facilities"><i class="fa-solid fa-angle-left"></i> المعامل والمرافق</a></li>
+                        <li><a href="#schedule"><i class="fa-solid fa-angle-left"></i> جدول الحصص الأسبوعي</a></li>
                         <li><a href="#services"><i class="fa-solid fa-angle-left"></i> التقييمات والأداءات</a></li>
                     </ul>
                 </div>

@@ -17,6 +17,23 @@
     <!-- School Portal Stylesheet -->
     <link rel="stylesheet" href="school-theme.css">
     <title>مدرسة المقاطعة الثانوية المشتركة | البوابة الرسمية</title>
+
+    <style>
+        /* تصميم الزر */
+        .music-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+        }
+        .music-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,9 +49,18 @@
                     <i class="fa-solid fa-arrow-right"></i>
                     العودة لبوابة إدارة السنبلاوين
                 </a>
+                <audio id="bgMusic" loop>
+        <source src="./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- زر التحكم في الصوت -->
+    <button id="toggleBtn" class="music-btn" onclick="toggleMusic()">🔊 تشغيل النشيد الوطني</button>
+
             </div>
         </div>
     </div>
+
+   
 
     <!-- Main Navigation Bar -->
     <header class="school-navbar">
@@ -423,7 +449,42 @@
         </div>
     </footer>
 
-    <!-- Interactive Script -->
-    <script src="school-script.js"></script>
+  
+
+
+
+    <script>
+        var music = document.getElementById('bgMusic');
+        var btn = document.getElementById('toggleBtn');
+        var isPlaying = false;
+
+        // 1. تشغيل تلقائي مع أول نقرة في الصفحة لتجاوز قيود المتصفح
+        window.addEventListener('click', function startAudioOnInteraction() {
+            if (!isPlaying) {
+                music.play().then(() => {
+                    isPlaying = true;
+                    btn.textContent = "🔊 إيقاف الموسيقى";
+                }).catch(err => {
+                    console.log("لم يبدأ التشغيل:", err);
+                });
+            }
+        }, { once: true }); // تعمل مرة واحدة فقط عند أول نقرة
+
+        // 2. وظيفة الزر للتبديل بين التشغيل والإيقاف
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                btn.textContent = "🔈 تشغيل النشيد الوطني";
+            } else {
+                music.play();
+                isPlaying = true;
+                btn.textContent = "🔊 إيقاف النشيد الوطني";
+            }
+        }
+    </script>
+    
+    
 </body>
 </html>
+

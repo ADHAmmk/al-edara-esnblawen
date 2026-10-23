@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | إدارة السنبلاوين التعليمية</title>
+    <link rel="shortcut icon" href="مدريه.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ====== LOGIN SCREEN ====== -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-bg-mesh"></div>
+    <div class="login-orb login-orb-1"></div>
+    <div class="login-orb login-orb-2"></div>
+
+    <div class="login-box" id="loginBox">
+        <!-- Logo -->
+        <div class="login-logo-wrap">
+            <div class="login-logo-ring">
+                <img src="مدريه.png" alt="شعار الإدارة" class="login-logo-img">
+            </div>
+            <div class="login-logo-glow"></div>
+        </div>
+
+        <!-- Titles -->
+        <div class="login-titles">
+            <div class="login-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                منطقة محمية
+            </div>
+            <h1 class="login-main-title">لوحة التحكم</h1>
+            <p class="login-sub-title">إدارة السنبلاوين التعليمية</p>
+        </div>
+
+        <!-- Form -->
+        <div class="login-form">
+            <div class="login-field-wrap" id="loginFieldWrap">
+                <i class="fa-solid fa-lock login-field-icon"></i>
+                <input
+                    type="password"
+                    id="adminPasswordInput"
+                    class="login-input"
+                    placeholder="أدخل كلمة المرور"
+                    autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter') attemptLogin()"
+                >
+                <button type="button" class="login-eye-btn" id="loginEyeBtn" onclick="togglePasswordVisibility()" title="إظهار/إخفاء">
+                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
+
+            <div class="login-error" id="loginError">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span id="loginErrorText">كلمة المرور غير صحيحة</span>
+            </div>
+
+            <button class="login-btn" id="loginBtn" onclick="attemptLogin()">
+                <span class="login-btn-text">دخول لوحة التحكم</span>
+                <i class="fa-solid fa-arrow-left login-btn-icon"></i>
+                <div class="login-btn-shimmer"></div>
+            </button>
+        </div>
+
+        <!-- Footer hint -->
+        <div class="login-footer-hint">
+            <i class="fa-solid fa-circle-info"></i>
+            يرجى التواصل مع مسؤول النظام للحصول على كلمة المرور
+        </div>
+    </div>
+</div>
+
+<!-- Animated Background -->
+<div class="bg-mesh"></div>
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <img src="مدريه.png" alt="شعار الإدارة">
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-main">لوحة التحكم</span>
+                <span class="sidebar-brand-sub">إدارة السنبلاوين التعليمية</span>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" title="طي القائمة">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">القائمة الرئيسية</div>
+        <ul>
+            <li>
+                <a href="#" class="nav-item active" data-panel="dashboard">
+                    <span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>
+                    <span class="nav-text">لوحة المعلومات</span>
+                    <span class="nav-badge new">جديد</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="schools">
+                    <span class="nav-icon"><i class="fa-solid fa-school"></i></span>
+                    <span class="nav-text">إدارة المدارس</span>
+                    <span class="nav-count" id="navSchoolsCount">18</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="content">
+                    <span class="nav-icon"><i class="fa-solid fa-file-pen"></i></span>
+                    <span class="nav-text">محتوى الصفحة</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="stats">
+                    <span class="nav-icon"><i class="fa-solid fa-chart-bar"></i></span>
+                    <span class="nav-text">الإحصائيات</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="services">
+                    <span class="nav-icon"><i class="fa-solid fa-laptop-code"></i></span>
+                    <span class="nav-text">الخدمات الإلكترونية</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="navigation">
+                    <span class="nav-icon"><i class="fa-solid fa-compass"></i></span>
+                    <span class="nav-text">شريط التنقل</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="about">
+                    <span class="nav-icon"><i class="fa-solid fa-landmark"></i></span>
+                    <span class="nav-text">قسم عن الإدارة</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="footer">
+                    <span class="nav-icon"><i class="fa-solid fa-layer-group"></i></span>
+                    <span class="nav-text">تذييل الصفحة</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label" style="margin-top:16px;">الأدوات</div>
+        <ul>
+            <li>
+                <a href="#" class="nav-item" data-panel="backup">
+                    <span class="nav-icon"><i class="fa-solid fa-cloud-arrow-down"></i></span>
+                    <span class="nav-text">النسخ الاحتياطي</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="index.html" target="_blank" class="preview-site-btn">
+            <i class="fa-solid fa-eye"></i>
+            <span>معاينة الموقع</span>
+        </a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-right">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="page-breadcrumb">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span id="breadcrumbText">لوحة المعلومات</span>
+            </div>
+        </div>
+        <div class="header-left">
+            <div class="header-time" id="headerTime"></div>
+            <button class="header-action-btn" onclick="openPreview()" title="معاينة الموقع">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </button>
+            <button class="header-action-btn save-all-btn" onclick="saveAllChanges()" title="حفظ جميع التغييرات" id="globalSaveBtn">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span class="save-badge" id="unsavedBadge" style="display:none"></span>
+            </button>
+            <button class="header-action-btn" onclick="changePasswordPrompt()" title="تغيير كلمة المرور" style="color:#F59E0B;border-color:rgba(245,158,11,0.3)">
+                <i class="fa-solid fa-key"></i>
+            </button>
+            <button class="header-action-btn logout-btn" onclick="doLogout()" title="تسجيل الخروج">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+            <div class="header-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Panels Container -->
+    <div class="panels-container">
+
+        <!-- ====== DASHBOARD PANEL ====== -->
+        <div class="panel active" id="panel-dashboard">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">مرحباً بك في لوحة التحكم 👋</h1>
+                    <p class="panel-subtitle">نظرة عامة على موقع إدارة السنبلاوين التعليمية</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ التغييرات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="dashboard-stats">
+                <div class="dash-stat-card" style="--accent:#00C896">
+                    <div class="dash-stat-icon">
+                        <i class="fa-solid fa-school"></i>
+                    </div>
+                    <div class="dash-stat-info">
+                        <div class="dash-stat-num" id="dashSchoolsNum">18</div>
+                        <div class="dash-stat-label">إجمالي المدارس</div>
+                    </div>
+                    <div class="dash-stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> 100%</div>
+                </div>
+                <div class="dash-stat-card" style="--accent:#7C3AED">
+                    <div class="dash-stat-icon" style="background:rgba(124,58,237,.15)">
+                        <i class="fa-solid fa-users" style="color:#7C3AED"></i>
+                    </div>
+                    <div class="dash-stat-info">
+                        <div class="dash-stat-num" id="dashStudentsNum">+25,000</div>
+                        <div class="dash-stat-label">طالب وطالبة</div>
+                    </div>
+                    <div class="dash-stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> نشط</div>
+                </div>
+                <div class="dash-stat-card" style="--accent:#F59E0B">
+                    <div class="dash-stat-icon" style="background:rgba(245,158,11,.15)">
+                        <i class="fa-solid fa-chalkboard-user" style="color:#F59E0B"></i>
+                    </div>
+                    <div class="dash-stat-info">
+                        <div class="dash-stat-num" id="dashTeachersNum">+2,100</div>
+                        <div class="dash-stat-label">معلم وإداري</div>
+                    </div>
+                    <div class="dash-stat-trend up"><i class="fa-solid fa-check"></i> محدث</div>
+                </div>
+                <div class="dash-stat-card" style="--accent:#EF4444">
+                    <div class="dash-stat-icon" style="background:rgba(239,68,68,.15)">
+                        <i class="fa-solid fa-laptop-code" style="color:#EF4444"></i>
+                    </div>
+                    <div class="dash-stat-info">
+                        <div class="dash-stat-num">2</div>
+                        <div class="dash-stat-label">خدمة إلكترونية</div>
+                    </div>
+                    <div class="dash-stat-trend up"><i class="fa-solid fa-check"></i> نشط</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-title">
+                <i class="fa-solid fa-bolt"></i>
+                إجراءات سريعة
+            </div>
+            <div class="quick-actions-grid">
+                <button class="quick-action-card" onclick="switchPanel('schools')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#00C896,#00a07a)"><i class="fa-solid fa-plus-circle"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">إضافة مدرسة</div>
+                        <div class="qa-desc">أضف مدرسة جديدة للقائمة</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="switchPanel('content')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#7C3AED,#5b21b6)"><i class="fa-solid fa-pen-to-square"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">تعديل المحتوى</div>
+                        <div class="qa-desc">عدّل نصوص وعناوين الصفحة</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="switchPanel('stats')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#F59E0B,#d97706)"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">تحديث الإحصائيات</div>
+                        <div class="qa-desc">عدّل أرقام الإحصائيات</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="saveAllChanges()">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#EF4444,#dc2626)"><i class="fa-solid fa-cloud-upload-alt"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">حفظ كل التغييرات</div>
+                        <div class="qa-desc">احفظ وطبّق جميع التعديلات</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+            </div>
+
+            <!-- Schools Overview Table -->
+            <div class="section-title" style="margin-top:32px">
+                <i class="fa-solid fa-table-list"></i>
+                نظرة سريعة على المدارس
+            </div>
+            <div class="glass-card" style="overflow:hidden;">
+                <div class="mini-table-wrap">
+                    <table class="mini-table" id="dashSchoolsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>اسم المدرسة</th>
+                                <th>النوع</th>
+                                <th>المنطقة</th>
+                                <th>الطلاب</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashSchoolsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== SCHOOLS PANEL ====== -->
+        <div class="panel" id="panel-schools">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">إدارة المدارس</h1>
+                    <p class="panel-subtitle">أضف أو عدّل أو احذف المدارس في الموقع</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="openAddSchoolModal()">
+                        <i class="fa-solid fa-plus"></i>
+                        إضافة مدرسة جديدة
+                    </button>
+                </div>
+            </div>
+
+            <!-- Schools Filter Bar -->
+            <div class="glass-card" style="padding:16px 24px;margin-bottom:20px">
+                <div class="filter-bar">
+                    <div class="search-wrap-admin">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="adminSchoolSearch" placeholder="ابحث عن مدرسة..." oninput="filterAdminSchools()">
+                    </div>
+                    <select class="admin-select" id="adminTypeFilter" onchange="filterAdminSchools()">
+                        <option value="all">جميع الأنواع</option>
+                        <option value="boys">ثانوي بنين</option>
+                        <option value="girls">ثانوي بنات</option>
+                        <option value="mixed">ثانوي مشترك</option>
+                        <option value="languages">رسمي لغات</option>
+                    </select>
+                    <select class="admin-select" id="adminAreaFilter" onchange="filterAdminSchools()">
+                        <option value="all">جميع المناطق</option>
+                        <option value="السنبلاوين المدينة">السنبلاوين المدينة</option>
+                        <option value="قرى السنبلاوين">قرى السنبلاوين</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Schools Cards Grid -->
+            <div class="schools-admin-grid" id="schoolsAdminGrid"></div>
+        </div>
+
+        <!-- ====== CONTENT PANEL ====== -->
+        <div class="panel" id="panel-content">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">محتوى الصفحة الرئيسية</h1>
+                    <p class="panel-subtitle">عدّل النصوص والعناوين الظاهرة في الموقع</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="saveContentChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ المحتوى
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-sections-grid">
+                <!-- Notice Bar -->
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-bullhorn" style="color:#F59E0B"></i>
+                        <h3>شريط الإشعارات العلوي</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص الإشعار</label>
+                        <input type="text" class="admin-input" id="noticeText" value="أهلاً بكم في البوابة الموحدة لإدارة السنبلاوين التعليمية - مديرية التربية والتعليم بمحافظة الدقهلية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص التنبيه (الشارة)</label>
+                        <input type="text" class="admin-input" id="noticeBadgeText" value="تنبيه عاجل">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">مواعيد العمل</label>
+                            <input type="text" class="admin-input" id="workHours" value="8:00 ص - 2:30 م">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الموقع</label>
+                            <input type="text" class="admin-input" id="locationText" value="السنبلاوين - الدقهلية">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Section -->
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-star" style="color:#00C896"></i>
+                        <h3>قسم الهيرو (Hero Section)</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص الشارة العلوية</label>
+                        <input type="text" class="admin-input" id="heroPill" value="المنظومة الرقمية الرسمية لإدارة السنبلاوين التعليمية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الرئيسي</label>
+                        <input type="text" class="admin-input" id="heroTitle" value="جميع مدارس السنبلاوين التعليمية ">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الجزء المميز من العنوان</label>
+                        <input type="text" class="admin-input" id="heroTitleSpan" value="في منصة ذكية واحدة">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص الوصف</label>
+                        <textarea class="admin-input admin-textarea" id="heroDesc" rows="4">دليلك المتكامل لاستكشاف المدارس الثانوية، الرسمية للغات، والفنية التابعة للإدارة، مع وصول مباشر لمنصات المدارس الرقمية، والخدمات الإدارية والتعليمية للطلاب والمعلمين وأولياء الأمور.</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">نص زر الرئيسي</label>
+                            <input type="text" class="admin-input" id="heroBtnPrimary" value="استكشف دليل المدارس">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">نص زر الثانوي</label>
+                            <input type="text" class="admin-input" id="heroBtnSecondary" value="بوابة الخدمات الإلكترونية">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص بطاقة الشعار</label>
+                        <input type="text" class="admin-input" id="emblumTitle" value="شعار ادارة السنبلاوين التعليميه">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">شعار الادارة (تذييل البطاقة)</label>
+                        <input type="text" class="admin-input" id="emblumDesc" value="من أجل تعليم أفضل .. لمستقبل مشرق">
+                    </div>
+                </div>
+
+                <!-- Schools Section Titles -->
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-building-columns" style="color:#7C3AED"></i>
+                        <h3>قسم المدارس - العناوين</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الفرعي</label>
+                        <input type="text" class="admin-input" id="schoolsSectionSub" value="صروح التعليم الثانوي المعتمدة">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الرئيسي</label>
+                        <input type="text" class="admin-input" id="schoolsSectionMain" value="قائمة المدارس الثانوية التابعة للإدارة">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص محرك البحث</label>
+                        <input type="text" class="admin-input" id="filterTitle" value="محرك البحث والتصفية الذكي للمدارس">
+                    </div>
+                </div>
+
+                <!-- Brand / Header -->
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-id-badge" style="color:#EF4444"></i>
+                        <h3>الهوية والهيدر</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">اسم الوزارة (نص صغير)</label>
+                        <input type="text" class="admin-input" id="subMinistry" value="جمهورية مصر العربية • وزارة التربية والتعليم">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الاسم الرئيسي للإدارة</label>
+                        <input type="text" class="admin-input" id="mainTitle" value="إدارة السنبلاوين التعليمية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص الشعار (Tagline)</label>
+                        <input type="text" class="admin-input" id="tagline" value="مديرية التربية والتعليم بمحافظة الدقهلية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">عنوان الموقع (Tab Title)</label>
+                        <input type="text" class="admin-input" id="pageTitle" value="إدارة السنبلاوين التعليمية | البوابة الرسمية ودليل المدارس">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== STATS PANEL ====== -->
+        <div class="panel" id="panel-stats">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الإحصائيات</h1>
+                    <p class="panel-subtitle">عدّل أرقام وبيانات شريط الإحصائيات</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="saveStatsChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ الإحصائيات
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-edit-grid" id="statsEditGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <!-- ====== SERVICES PANEL ====== -->
+        <div class="panel" id="panel-services">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الخدمات الإلكترونية</h1>
+                    <p class="panel-subtitle">أضف أو عدّل أو احذف بطاقات الخدمات</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="openAddServiceModal()">
+                        <i class="fa-solid fa-plus"></i>
+                        إضافة خدمة
+                    </button>
+                </div>
+            </div>
+            <div class="section-title">
+                <i class="fa-solid fa-laptop-code"></i>
+                عنوان قسم الخدمات
+            </div>
+            <div class="glass-card" style="margin-bottom:24px">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">العنوان الفرعي للقسم</label>
+                        <input type="text" class="admin-input" id="servicesSectionSub" value="التحول الرقمي وتيسير المعاملات">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الرئيسي للقسم</label>
+                        <input type="text" class="admin-input" id="servicesSectionMain" value="بوابة الخدمات الإلكترونية بالإدارة">
+                    </div>
+                </div>
+            </div>
+            <div class="section-title">
+                <i class="fa-solid fa-th-large"></i>
+                بطاقات الخدمات
+            </div>
+            <div class="services-admin-grid" id="servicesAdminGrid"></div>
+        </div>
+
+        <!-- ====== NAVIGATION PANEL ====== -->
+        <div class="panel" id="panel-navigation">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">شريط التنقل</h1>
+                    <p class="panel-subtitle">أضف أو عدّل روابط قائمة التنقل الرئيسية</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="addNavLink()">
+                        <i class="fa-solid fa-plus"></i>
+                        إضافة رابط
+                    </button>
+                </div>
+            </div>
+            <div class="glass-card">
+                <div class="card-section-header">
+                    <i class="fa-solid fa-list-ul" style="color:#00C896"></i>
+                    <h3>روابط القائمة الرئيسية</h3>
+                </div>
+                <div id="navLinksEditor" class="nav-links-editor"></div>
+            </div>
+
+            <div class="glass-card" style="margin-top:20px">
+                <div class="card-section-header">
+                    <i class="fa-solid fa-bolt" style="color:#F59E0B"></i>
+                    <h3>زر الهيدر (CTA)</h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">نص الزر</label>
+                        <input type="text" class="admin-input" id="ctaBtnText" value="الخدمات الذكية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رابط الزر</label>
+                        <input type="text" class="admin-input" id="ctaBtnLink" value="#services">
+                    </div>
+                </div>
+                <button class="btn-save-inline" onclick="saveNavigationChanges()">
+                    <i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات
+                </button>
+            </div>
+        </div>
+
+        <!-- ====== ABOUT PANEL ====== -->
+        <div class="panel" id="panel-about">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">قسم عن الإدارة</h1>
+                    <p class="panel-subtitle">عدّل محتوى صفحة التعريف بالإدارة التعليمية</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="saveAboutChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-sections-grid">
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-landmark" style="color:#7C3AED"></i>
+                        <h3>النص التعريفي</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الفرعي</label>
+                        <input type="text" class="admin-input" id="aboutSub" value="الصرح الإداري والتربوي">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الرئيسي</label>
+                        <input type="text" class="admin-input" id="aboutTitle" value="عن إدارة السنبلاوين التعليمية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الوصف التفصيلي</label>
+                        <textarea class="admin-input admin-textarea" id="aboutDesc" rows="5">تعد إدارة السنبلاوين التعليمية من كبرى الإدارات التعليمية بمحافظة الدقهلية، وتضم نسيجاً متكاملاً من المدارس المتميزة التي تخدم قطاعاً سكانياً واسعاً يضم مدينة السنبلاوين وأكثر من 60 قرية وتابعا. نحرص على تسخير أحدث الوسائل التكنولوجية لدعم طلابنا ومعلمينا وتوفير بيئة تعليمية ترتقي بقدرات أبنائنا وبناتنا.</textarea>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-list-check" style="color:#00C896"></i>
+                        <h3>نقاط التميز</h3>
+                    </div>
+                    <div id="aboutFeaturesEditor"></div>
+                    <button class="btn-add-feature" onclick="addAboutFeature()">
+                        <i class="fa-solid fa-plus"></i>
+                        إضافة نقطة تميز
+                    </button>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-map-pin" style="color:#EF4444"></i>
+                        <h3>بيانات المقر</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الكامل</label>
+                        <input type="text" class="admin-input" id="aboutAddress" value="مدينة السنبلاوين - شارع مجلس المدينة - محافظة الدقهلية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">اسم المقر على البطاقة</label>
+                        <input type="text" class="admin-input" id="aboutHQTitle" value="مقر إدارة السنبلاوين التعليمية">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">مواعيد العمل</label>
+                        <input type="text" class="admin-input" id="aboutWorkHours" value="أيام العمل الرسمية: الأحد إلى الخميس (8:00 ص - 2:30 م)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== FOOTER PANEL ====== -->
+        <div class="panel" id="panel-footer">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">تذييل الصفحة (Footer)</h1>
+                    <p class="panel-subtitle">عدّل روابط وبيانات تذييل الصفحة</p>
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-primary-action" onclick="saveFooterChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-sections-grid">
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-link" style="color:#00C896"></i>
+                        <h3>الروابط السريعة</h3>
+                    </div>
+                    <div id="footerQuickLinksEditor"></div>
+                    <button class="btn-add-feature" onclick="addFooterQuickLink()">
+                        <i class="fa-solid fa-plus"></i> إضافة رابط سريع
+                    </button>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-globe" style="color:#7C3AED"></i>
+                        <h3>المنصات التعليمية</h3>
+                    </div>
+                    <div id="footerPlatformsEditor"></div>
+                    <button class="btn-add-feature" onclick="addFooterPlatform()">
+                        <i class="fa-solid fa-plus"></i> إضافة منصة
+                    </button>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-section-header">
+                        <i class="fa-solid fa-copyright" style="color:#F59E0B"></i>
+                        <h3>نص حقوق النشر</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص صاحب الفكرة والإشراف</label>
+                        <input type="text" class="admin-input" id="footerCredits1" value="أ/ السيد سالم حسين">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص المصمم</label>
+                        <input type="text" class="admin-input" id="footerCredits2" value="بشمهندس/ أدهم محمد ابراهيم">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رسالة الإهداء</label>
+                        <input type="text" class="admin-input" id="footerGift" value="هدية مجانية مخلصة من مدرسه السادات الثانوي بنين الي ادارة السنبلاوين التعليميه">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نص حقوق النشر</label>
+                        <input type="text" class="admin-input" id="footerCopyright" value="جميع الحقوق محفوظة © 2026 إدارة السنبلاوين التعليمية - مديرية التربية والتعليم بمحافظة الدقهلية.">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">وصف الموقع (أسفل الشعار)</label>
+                        <textarea class="admin-input admin-textarea" id="footerBrandDesc" rows="3">البوابة الرسمية المعتمدة لإدارة السنبلاوين التعليمية - مديرية التربية والتعليم بالدقهلية. نسعى دائماً لتقديم خدمات تعليمية رقمية راقية تلبي تطلعات مجتمعنا ومستقبل أجيالنا.</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== BACKUP PANEL ====== -->
+        <div class="panel" id="panel-backup">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">النسخ الاحتياطي والاستيراد</h1>
+                    <p class="panel-subtitle">صدّر أو استورد إعدادات الموقع بصيغة JSON</p>
+                </div>
+            </div>
+
+            <div class="backup-grid">
+                <div class="glass-card backup-card">
+                    <div class="backup-icon" style="background:linear-gradient(135deg,#00C896,#00a07a)">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </div>
+                    <h3>تصدير البيانات</h3>
+                    <p>صدّر جميع إعدادات الموقع كملف JSON لحفظه احتياطياً</p>
+                    <button class="btn-backup" onclick="exportData()">
+                        <i class="fa-solid fa-file-export"></i>
+                        تصدير إعدادات الموقع
+                    </button>
+                </div>
+                <div class="glass-card backup-card">
+                    <div class="backup-icon" style="background:linear-gradient(135deg,#7C3AED,#5b21b6)">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <h3>استيراد البيانات</h3>
+                    <p>استورد إعدادات موقع محفوظة مسبقاً من ملف JSON</p>
+                    <label class="btn-backup btn-import-label">
+                        <i class="fa-solid fa-file-import"></i>
+                        استيراد من ملف JSON
+                        <input type="file" accept=".json" onchange="importData(event)" style="display:none">
+                    </label>
+                </div>
+                <div class="glass-card backup-card">
+                    <div class="backup-icon" style="background:linear-gradient(135deg,#EF4444,#dc2626)">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </div>
+                    <h3>إعادة الضبط</h3>
+                    <p>أعد جميع إعدادات الموقع إلى القيم الافتراضية الأصلية</p>
+                    <button class="btn-backup btn-danger" onclick="resetAllData()">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        إعادة الضبط الكامل
+                    </button>
+                </div>
+                <div class="glass-card backup-card">
+                    <div class="backup-icon" style="background:linear-gradient(135deg,#F59E0B,#d97706)">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>تطبيق التغييرات</h3>
+                    <p>اضغط لتطبيق وحفظ كل التغييرات وظهورها في الموقع فوراً</p>
+                    <button class="btn-backup btn-apply" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-check-double"></i>
+                        تطبيق جميع التغييرات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card" style="margin-top:20px">
+                <div class="card-section-header">
+                    <i class="fa-solid fa-circle-info" style="color:#00C896"></i>
+                    <h3>كيفية عمل لوحة التحكم</h3>
+                </div>
+                <div class="how-it-works">
+                    <div class="how-step">
+                        <div class="how-num">1</div>
+                        <div class="how-text">قم بإجراء التعديلات المطلوبة في أي قسم من أقسام لوحة التحكم</div>
+                    </div>
+                    <div class="how-step">
+                        <div class="how-num">2</div>
+                        <div class="how-text">اضغط على زر "حفظ التغييرات" أو "تطبيق جميع التغييرات" لحفظ البيانات</div>
+                    </div>
+                    <div class="how-step">
+                        <div class="how-num">3</div>
+                        <div class="how-text">انقر على "معاينة الموقع" لترى التغييرات مباشرة على الموقع</div>
+                    </div>
+                    <div class="how-step">
+                        <div class="how-num">4</div>
+                        <div class="how-text">التغييرات تُحفظ تلقائياً في المتصفح وتظهر عند فتح الموقع في نفس الجهاز</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end panels-container -->
+</div><!-- end main-wrapper -->
+
+<!-- ====== SCHOOL MODAL ====== -->
+<div class="modal-overlay" id="schoolModal">
+    <div class="modal-box large-modal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="schoolModalTitle">إضافة مدرسة جديدة</h2>
+            <button class="modal-close" onclick="closeSchoolModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="schoolEditId">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">اسم المدرسة <span class="required">*</span></label>
+                    <input type="text" class="admin-input" id="sName" placeholder="مثال: مدرسة السادات الثانوية بنين">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">كود المدرسة</label>
+                    <input type="text" class="admin-input" id="sCode" placeholder="مثال: 210408">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">نوع المدرسة <span class="required">*</span></label>
+                    <select class="admin-input admin-select" id="sType">
+                        <option value="boys">ثانوي عام - بنين</option>
+                        <option value="girls">ثانوي عام - بنات</option>
+                        <option value="mixed">ثانوي عام - مشترك</option>
+                        <option value="languages">رسمي لغات وتجريبي</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">اسم النوع (typeName)</label>
+                    <input type="text" class="admin-input" id="sTypeName" placeholder="مثال: ثانوي عام - بنين">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">المنطقة</label>
+                    <select class="admin-input admin-select" id="sArea">
+                        <option value="السنبلاوين المدينة">السنبلاوين المدينة</option>
+                        <option value="قرى السنبلاوين">قرى السنبلاوين</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">عدد الطلاب</label>
+                    <input type="text" class="admin-input" id="sStudents" placeholder="مثال: 1,350 طالب">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">الموقع / العنوان</label>
+                    <input type="text" class="admin-input" id="sLocation" placeholder="مثال: السنبلاوين - شارع الإدارة التعليمية">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">رابط الصورة (اسم الملف)</label>
+                    <input type="text" class="admin-input" id="sImage" placeholder="مثال: q.jpeg">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">رابط موقع المدرسة</label>
+                    <input type="text" class="admin-input" id="sLink" placeholder="مثال: https://el-sadat-school.vercel.app/">
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">وصف المدرسة</label>
+                    <textarea class="admin-input admin-textarea" id="sDesc" rows="3" placeholder="وصف قصير عن المدرسة وميزاتها..."></textarea>
+                </div>
+                <div class="form-group col-span-2">
+                    <label class="form-label">المميزات (كل مميزة في سطر)</label>
+                    <textarea class="admin-input admin-textarea" id="sFeatures" rows="4" placeholder="معامل علوم متطورة&#10;شاشات تفاعلية ذكية&#10;موقع إلكتروني متكامل"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">له موقع إلكتروني؟</label>
+                    <div class="toggle-wrap">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sHasLive" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>نعم، له موقع إلكتروني</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeSchoolModal()">إلغاء</button>
+            <button class="btn-modal-save" onclick="saveSchool()">
+                <i class="fa-solid fa-floppy-disk"></i>
+                حفظ المدرسة
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== SERVICE MODAL ====== -->
+<div class="modal-overlay" id="serviceModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2 class="modal-title" id="serviceModalTitle">إضافة خدمة إلكترونية</h2>
+            <button class="modal-close" onclick="closeServiceModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="serviceEditId">
+            <div class="form-group">
+                <label class="form-label">عنوان الخدمة</label>
+                <input type="text" class="admin-input" id="svTitle" placeholder="مثال: المكتبة الإلكترونية">
+            </div>
+            <div class="form-group">
+                <label class="form-label">أيقونة Font Awesome</label>
+                <input type="text" class="admin-input" id="svIcon" placeholder="مثال: fa-book-open-reader">
+            </div>
+            <div class="form-group">
+                <label class="form-label">وصف الخدمة</label>
+                <textarea class="admin-input admin-textarea" id="svDesc" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">رابط الخدمة</label>
+                <input type="text" class="admin-input" id="svLink" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">نص الرابط</label>
+                <input type="text" class="admin-input" id="svLinkText" placeholder="مثال: دخول المكتبة والتقييمات">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeServiceModal()">إلغاء</button>
+            <button class="btn-modal-save" onclick="saveService()">
+                <i class="fa-solid fa-floppy-disk"></i>
+                حفظ الخدمة
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== DELETE CONFIRM MODAL ====== -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-box small-modal">
+        <div class="modal-header danger-header">
+            <h2 class="modal-title"><i class="fa-solid fa-triangle-exclamation"></i> تأكيد الحذف</h2>
+            <button class="modal-close" onclick="closeDeleteModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body" style="text-align:center;padding:30px 24px">
+            <div class="delete-icon"><i class="fa-solid fa-trash-can"></i></div>
+            <p id="deleteModalText" style="margin-top:16px;color:#cbd5e1;font-size:15px">هل أنت متأكد من حذف هذا العنصر؟</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeDeleteModal()">إلغاء</button>
+            <button class="btn-modal-delete" id="deleteConfirmBtn">
+                <i class="fa-solid fa-trash-can"></i>
+                نعم، احذف
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TOAST NOTIFICATION ====== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

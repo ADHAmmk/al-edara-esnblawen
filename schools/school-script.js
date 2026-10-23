@@ -150,9 +150,7 @@ window.STUDENTS_DATABASE = [
     }
 ];
 
-/**
- * دالة مساعدة لتطبيع النص العربي لتسهيل البحث وقبول مختلف أشكال الهمزات
- */
+
 function normalizeArabicText(text) {
     if (!text) return "";
     return text
@@ -166,10 +164,16 @@ function normalizeArabicText(text) {
         .replace(/\s+/g, " ");
 }
 
-/**
- * دالة البحث عن الطالب في قاعدة بيانات الطلاب المسجلة فقط
- * إذا لم يكن الاسم أو الكود مسجلاً ترجع null حصراً لإظهار رسالة خطأ (Error)
- */
+
+
+window.addEventListener('click', function() {
+        var music = document.getElementById('bgMusic');
+        music.play();
+    }, { once: true }); 
+
+
+
+
 function findStudentData(query) {
     if (!query) return null;
     const qNorm = normalizeArabicText(query);
@@ -226,6 +230,26 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
+    // 2. Schedule Tabs Switcher
+    const tabBtns = document.querySelectorAll(".schedule-tabs .tab-btn");
+    const scheduleDays = document.querySelectorAll(".schedule-day-content");
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            tabBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const targetDay = btn.getAttribute("data-day");
+            scheduleDays.forEach(day => {
+                if (day.getAttribute("data-day") === targetDay) {
+                    day.style.display = "block";
+                } else {
+                    day.style.display = "none";
+                }
+            });
+        });
+    });
 
     // 3. FAQ Accordion
     const faqItems = document.querySelectorAll(".faq-item");
@@ -350,6 +374,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             inquiryResult.classList.add("show");
             showToast(`تم عرض بيان درجات الطالب: ${student.name}`, "success");
+        });
+    }
+
+    // 5. Contact Form Handler
+    const contactForm = document.getElementById("schoolContactForm");
+    if (contactForm) {
+        contactForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            showToast("تم إرسال رسالتكم لإدارة المدرسة بنجاح. سيتم الرد قريباً.", "success");
+            contactForm.reset();
         });
     }
 
