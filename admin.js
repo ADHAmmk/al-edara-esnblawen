@@ -72,6 +72,28 @@ const DEFAULT_FOOTER_PLATFORMS = [
     { text: "مركز معلومات الوزارة (EMIS)", href: "https://emis.gov.eg/" }
 ];
 
+// ======================== PRESET SCHOOL IMAGES ========================
+const PRESET_SCHOOL_IMAGES = [
+    { name: 'q.jpeg', label: 'مدرسة السادات' },
+    { name: 'a.jpeg', label: 'المقاطعة المشتركة' },
+    { name: 'i.jpeg', label: 'أحمد لطفي السيد' },
+    { name: 'u.jpeg', label: 'السنبلاوين الرسمية لغات' },
+    { name: 'w.jpeg', label: 'كفر غنام المشتركة' },
+    { name: 'خ.jpg', label: 'السنبلاوين بنات' },
+    { name: 'ن.jpg', label: 'طهواي المشتركة' },
+    { name: 'ق.jpg', label: 'ابوقراميط المشتركة' },
+    { name: 'Gemini_Generated_Image_5uuyar5uuyar5uuy.jpg', label: 'حسين عثمان' },
+    { name: 'Gemini_Generated_Image_6xhnxw6xhnxw6xhn.jpg', label: 'البلامون' },
+    { name: 'Gemini_Generated_Image_720j40720j40720j.jpg', label: 'طوخ الأقلام' },
+    { name: 'Gemini_Generated_Image_cvqxkmcvqxkmcvqx.jpg', label: 'الشهيد مصطفى فتوح' },
+    { name: 'Gemini_Generated_Image_g9c38tg9c38tg9c3.jpg', label: 'غزالة' },
+    { name: 'Gemini_Generated_Image_k8uhd4k8uhd4k8uh.jpg', label: 'صبح كاعوه' },
+    { name: 'WhatsApp Image 2026-09-27 at 5.56.24 PM.jpeg', label: 'ميت غراب وشبراهور' },
+    { name: 'WhatsApp Image 2026-09-27 at 6.03.07 PM.jpeg', label: 'الشهيد محمد الراعي' },
+    { name: 'WhatsApp Image 2026-09-27 at 6.05.21 PM.jpeg', label: 'السنبلاوين المتميزة' },
+    { name: 'WhatsApp Image 2026-09-27 at 6.06.50 PM.jpeg', label: 'الزهايرة المشتركة' }
+];
+
 // ======================== STATE ========================
 let appState = {
     schools: [],
@@ -104,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFooterEditors();
     loadContentFields();
     initMobileMenu();
+    initSchoolImageManager();
 });
 
 // ======================== LOGIN ========================
@@ -305,6 +328,7 @@ function renderDashTable() {
             <td>${s.area}</td>
             <td>${s.studentsCount}</td>
             <td style="display:flex;gap:6px">
+                <button class="table-action-btn" onclick="openQuickImageModal(${s.id})" title="تغيير الصورة"><i class="fa-solid fa-camera"></i> صورة</button>
                 <button class="table-action-btn" onclick="openEditSchoolModal(${s.id})"><i class="fa-solid fa-pen"></i> تعديل</button>
                 <button class="table-action-btn danger" onclick="confirmDeleteSchool(${s.id})"><i class="fa-solid fa-trash"></i></button>
             </td>
@@ -334,12 +358,16 @@ function renderSchoolsAdmin(filter = {}) {
 
     grid.innerHTML = schools.map(s => `
         <div class="school-admin-card">
-            <div style="position:relative">
+            <div class="school-card-media">
                 <img class="school-admin-card-img" src="${s.image}" alt="${s.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                 <div class="school-admin-card-img-placeholder" style="display:none"><i class="fa-solid fa-school"></i></div>
                 <div class="school-card-overlay">
                     <span class="table-type-badge badge-${s.type}" style="font-size:10px">${s.typeName}</span>
                 </div>
+                <button class="btn-change-image-overlay" onclick="openQuickImageModal(${s.id})" title="تغيير صورة المدرسة">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>تغيير الصورة</span>
+                </button>
             </div>
             <div class="school-card-body">
                 <div class="school-card-name">${s.name}</div>
@@ -349,6 +377,9 @@ function renderSchoolsAdmin(filter = {}) {
                 <div class="school-card-actions">
                     <button class="btn-card-edit" onclick="openEditSchoolModal(${s.id})">
                         <i class="fa-solid fa-pen-to-square"></i> تعديل
+                    </button>
+                    <button class="btn-card-photo" onclick="openQuickImageModal(${s.id})" title="تغيير الصورة">
+                        <i class="fa-solid fa-camera"></i> الصورة
                     </button>
                     <button class="btn-card-delete" onclick="confirmDeleteSchool(${s.id})" title="حذف">
                         <i class="fa-solid fa-trash-can"></i>
@@ -368,6 +399,8 @@ function openAddSchoolModal() {
     document.getElementById('schoolModalTitle').textContent = 'إضافة مدرسة جديدة';
     document.getElementById('schoolEditId').value = '';
     clearSchoolForm();
+    updateSchoolImagePreviewInModal('q.jpeg');
+    renderImagePresets('modalImagePresetsGrid', 'q.jpeg', 'modal');
     openModal('schoolModal');
 }
 
@@ -390,6 +423,10 @@ function openEditSchoolModal(id) {
     document.getElementById('sFeatures').value = (school.features || []).join('\n');
     document.getElementById('sHasLive').checked = school.hasLiveSite !== false;
 
+    const curImg = school.image || 'q.jpeg';
+    updateSchoolImagePreviewInModal(curImg);
+    renderImagePresets('modalImagePresetsGrid', curImg, 'modal');
+
     openModal('schoolModal');
 }
 
@@ -401,6 +438,8 @@ function clearSchoolForm() {
     document.getElementById('sType').value = 'mixed';
     document.getElementById('sArea').value = 'السنبلاوين المدينة';
     document.getElementById('sHasLive').checked = true;
+    updateSchoolImagePreviewInModal('q.jpeg');
+    renderImagePresets('modalImagePresetsGrid', 'q.jpeg', 'modal');
 }
 
 function saveSchool() {
@@ -446,6 +485,273 @@ function saveSchool() {
 }
 
 function closeSchoolModal() { closeModal('schoolModal'); }
+
+// ======================== SCHOOL IMAGE MANAGER ENGINE ========================
+
+// الضغط الذكي للصور قبل حفظها لتوفير مساحة الـ localStorage وضمان سرعة العرض
+function compressImageFile(file, maxWidth = 1000, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+        if (!file || !file.type.startsWith('image/')) {
+            return reject(new Error('الملف المختار ليس صورة صالحة'));
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = () => reject(new Error('تعذر معالجة الصورة'));
+            img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('تعذر قراءة الملف'));
+        reader.readAsDataURL(file);
+    });
+}
+
+function initSchoolImageManager() {
+    setupDropzone('schoolDropzone', (file) => processImageUpload(file, 'modal'));
+    setupDropzone('quickDropzone', (file) => processImageUpload(file, 'quick'));
+}
+
+function setupDropzone(elementId, onFileSelected) {
+    const dropzone = document.getElementById(elementId);
+    if (!dropzone) return;
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+        });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer?.files;
+        if (files && files.length > 0) {
+            onFileSelected(files[0]);
+        }
+    });
+}
+
+function renderImagePresets(containerId, selectedImage, context) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const normalizedSelected = (selectedImage || '').trim();
+
+    container.innerHTML = PRESET_SCHOOL_IMAGES.map(preset => {
+        const isActive = normalizedSelected === preset.name;
+        return `
+            <div class="preset-thumb-card ${isActive ? 'active' : ''}" 
+                 onclick="selectPresetImage('${preset.name}', '${context}')" 
+                 title="${preset.label} (${preset.name})">
+                <img src="${preset.name}" alt="${preset.label}" onerror="this.src='q.jpeg'">
+                <div class="preset-check"><i class="fa-solid fa-check"></i></div>
+                <div class="preset-label">${preset.label}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function selectPresetImage(presetName, context) {
+    if (context === 'modal') {
+        const input = document.getElementById('sImage');
+        if (input) input.value = presetName;
+        updateSchoolImagePreviewInModal(presetName);
+        renderImagePresets('modalImagePresetsGrid', presetName, 'modal');
+        showToast(`تم اختيار صورة: ${presetName}`, 'info');
+    } else if (context === 'quick') {
+        const input = document.getElementById('quickImageInput');
+        if (input) input.value = presetName;
+        updateSchoolImagePreviewInQuick(presetName);
+        renderImagePresets('quickImagePresetsGrid', presetName, 'quick');
+        showToast(`تم اختيار صورة: ${presetName}`, 'info');
+    }
+}
+
+function switchImgTab(tabKey, btnEl, context) {
+    const parentContainer = btnEl.closest('.image-controls-col');
+    if (!parentContainer) return;
+
+    parentContainer.querySelectorAll('.img-tab-btn').forEach(btn => btn.classList.remove('active'));
+    btnEl.classList.add('active');
+
+    const prefix = context === 'modal' ? 'modalImgTab' : 'quickImgTab';
+    const tabMap = {
+        upload: prefix + 'Upload',
+        presets: prefix + 'Presets',
+        url: prefix + 'Url'
+    };
+
+    ['upload', 'presets', 'url'].forEach(key => {
+        const tabEl = document.getElementById(tabMap[key]);
+        if (tabEl) {
+            if (key === tabKey) {
+                tabEl.classList.add('active');
+            } else {
+                tabEl.classList.remove('active');
+            }
+        }
+    });
+}
+
+function handleSchoolImageFileUpload(fileInput, context) {
+    const file = fileInput.files && fileInput.files[0];
+    if (file) {
+        processImageUpload(file, context);
+    }
+    fileInput.value = '';
+}
+
+async function processImageUpload(file, context) {
+    try {
+        showToast('جاري تحسين وضغط الصورة...', 'info');
+        const compressedBase64 = await compressImageFile(file, 1100, 0.82);
+
+        if (context === 'modal') {
+            const input = document.getElementById('sImage');
+            if (input) input.value = compressedBase64;
+            updateSchoolImagePreviewInModal(compressedBase64, 'مرفوعة من الجهاز');
+            renderImagePresets('modalImagePresetsGrid', '', 'modal');
+        } else if (context === 'quick') {
+            const input = document.getElementById('quickImageInput');
+            if (input) input.value = compressedBase64;
+            updateSchoolImagePreviewInQuick(compressedBase64, 'مرفوعة من الجهاز');
+            renderImagePresets('quickImagePresetsGrid', '', 'quick');
+        }
+        showToast('تم رفع الصورة بنجاح جاهزة للحفظ ✅', 'success');
+    } catch(err) {
+        console.error(err);
+        showToast(err.message || 'فشل في رفع الصورة', 'error');
+    }
+}
+
+function onSchoolImageInputChanged(val, context) {
+    const cleaned = (val || '').trim();
+    if (context === 'modal') {
+        updateSchoolImagePreviewInModal(cleaned || 'q.jpeg');
+        renderImagePresets('modalImagePresetsGrid', cleaned, 'modal');
+    } else if (context === 'quick') {
+        updateSchoolImagePreviewInQuick(cleaned || 'q.jpeg');
+        renderImagePresets('quickImagePresetsGrid', cleaned, 'quick');
+    }
+}
+
+function updateSchoolImagePreviewInModal(imgSrc, customBadge) {
+    const imgEl = document.getElementById('schoolImgPreview');
+    const badgeEl = document.getElementById('schoolImgBadge');
+    if (imgEl) {
+        imgEl.src = imgSrc || 'q.jpeg';
+    }
+    if (badgeEl) {
+        if (customBadge) {
+            badgeEl.textContent = customBadge;
+        } else if ((imgSrc || '').startsWith('data:image')) {
+            badgeEl.textContent = 'صورة مرفوعة';
+        } else if ((imgSrc || '').startsWith('http')) {
+            badgeEl.textContent = 'رابط خارجي';
+        } else {
+            badgeEl.textContent = 'صورة محلية';
+        }
+    }
+}
+
+function updateSchoolImagePreviewInQuick(imgSrc, customBadge) {
+    const imgEl = document.getElementById('quickImgPreview');
+    const badgeEl = document.getElementById('quickImgBadge');
+    if (imgEl) {
+        imgEl.src = imgSrc || 'q.jpeg';
+    }
+    if (badgeEl) {
+        if (customBadge) {
+            badgeEl.textContent = customBadge;
+        } else if ((imgSrc || '').startsWith('data:image')) {
+            badgeEl.textContent = 'صورة مرفوعة';
+        } else if ((imgSrc || '').startsWith('http')) {
+            badgeEl.textContent = 'رابط خارجي';
+        } else {
+            badgeEl.textContent = 'صورة محلية';
+        }
+    }
+}
+
+function resetSchoolImageToDefault() {
+    const input = document.getElementById('sImage');
+    if (input) input.value = 'q.jpeg';
+    updateSchoolImagePreviewInModal('q.jpeg');
+    renderImagePresets('modalImagePresetsGrid', 'q.jpeg', 'modal');
+    showToast('تمت إعادة تعيين الصورة إلى الافتراضية', 'info');
+}
+
+function resetQuickImageToDefault() {
+    const input = document.getElementById('quickImageInput');
+    if (input) input.value = 'q.jpeg';
+    updateSchoolImagePreviewInQuick('q.jpeg');
+    renderImagePresets('quickImagePresetsGrid', 'q.jpeg', 'quick');
+    showToast('تمت إعادة تعيين الصورة إلى الافتراضية', 'info');
+}
+
+// نافذة التغيير السريع لصورة المدرسة
+function openQuickImageModal(schoolId) {
+    const school = appState.schools.find(s => s.id === schoolId);
+    if (!school) return;
+
+    document.getElementById('quickImageSchoolId').value = schoolId;
+    document.getElementById('quickImageSchoolName').textContent = `تغيير صورة: ${school.name}`;
+    
+    const curImg = school.image || 'q.jpeg';
+    document.getElementById('quickImageInput').value = curImg;
+    updateSchoolImagePreviewInQuick(curImg);
+    renderImagePresets('quickImagePresetsGrid', curImg, 'quick');
+
+    // Default to upload tab
+    const uploadBtn = document.querySelector('#quickImageModal [data-tab="upload"]');
+    if (uploadBtn) switchImgTab('upload', uploadBtn, 'quick');
+
+    openModal('quickImageModal');
+}
+
+function saveQuickSchoolImage() {
+    const schoolId = parseInt(document.getElementById('quickImageSchoolId').value, 10);
+    const newImage = (document.getElementById('quickImageInput').value || '').trim() || 'q.jpeg';
+
+    const school = appState.schools.find(s => s.id === schoolId);
+    if (!school) {
+        showToast('لم يتم العثور على المدرسة', 'error');
+        return;
+    }
+
+    school.image = newImage;
+    markUnsaved();
+    saveToStorage();
+    renderSchoolsAdmin();
+    renderDashboard();
+    closeQuickImageModal();
+    showToast(`تم حفظ وتحديث صورة "${school.name}" بنجاح ✅`, 'success');
+}
+
+function closeQuickImageModal() {
+    closeModal('quickImageModal');
+}
 
 // ======================== DELETE ========================
 function confirmDeleteSchool(id) {

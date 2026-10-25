@@ -199,6 +199,37 @@ function findStudentData(query) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 0. مزامنة صورة المدرسة المحدثة من لوحة التحكم تلقائياً
+    try {
+        const savedSchools = JSON.parse(localStorage.getItem('admin_schools'));
+        if (Array.isArray(savedSchools) && savedSchools.length > 0) {
+            const pagePath = window.location.pathname;
+            const matchId = pagePath.match(/school-(\d+)\.html/);
+            let schoolInfo = null;
+            if (matchId) {
+                const sid = parseInt(matchId[1], 10);
+                schoolInfo = savedSchools.find(s => s.id === sid);
+            }
+            if (!schoolInfo) {
+                const pageTitle = document.title || '';
+                const brandText = document.querySelector('.school-brand-text h1')?.textContent || '';
+                schoolInfo = savedSchools.find(s => pageTitle.includes(s.name) || brandText.includes(s.name));
+            }
+            if (schoolInfo && schoolInfo.image) {
+                const heroImg = document.querySelector('.hero-img-wrapper img');
+                if (heroImg) {
+                    let src = schoolInfo.image;
+                    if (!src.startsWith('data:') && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('../')) {
+                        src = '../' + src;
+                    }
+                    heroImg.src = src;
+                }
+            }
+        }
+    } catch(err) {
+        console.warn('Notice syncing school image from storage:', err);
+    }
+
     // 1. Mobile Menu Toggle
     const menuToggle = document.getElementById("mobileToggle");
     const navMenu = document.getElementById("navMenu");

@@ -867,9 +867,67 @@
                     <label class="form-label">الموقع / العنوان</label>
                     <input type="text" class="admin-input" id="sLocation" placeholder="مثال: السنبلاوين - شارع الإدارة التعليمية">
                 </div>
-                <div class="form-group col-span-2">
-                    <label class="form-label">رابط الصورة (اسم الملف)</label>
-                    <input type="text" class="admin-input" id="sImage" placeholder="مثال: q.jpeg">
+                <!-- مدير صورة المدرسة المتطور -->
+                <div class="form-group col-span-2 school-image-manager">
+                    <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span><i class="fa-solid fa-image"></i> صورة المدرسة</span>
+                        <span id="schoolImgStatusHint" style="font-size:11px;color:var(--text-muted);font-weight:normal;">اختر طريقة تعيين الصورة</span>
+                    </label>
+                    <div class="image-uploader-box">
+                        <!-- عمود المعاينة الفورية -->
+                        <div class="image-preview-col">
+                            <div class="image-preview-wrapper" id="schoolImgPreviewWrapper">
+                                <img id="schoolImgPreview" src="q.jpeg" alt="معاينة صورة المدرسة" onerror="this.src='q.jpeg'">
+                                <div class="image-preview-badge" id="schoolImgBadge">صورة حالية</div>
+                            </div>
+                            <button type="button" class="btn-clear-image" onclick="resetSchoolImageToDefault()" title="إعادة تعيين للصورة الافتراضية">
+                                <i class="fa-solid fa-rotate-left"></i> افتراضي
+                            </button>
+                        </div>
+
+                        <!-- عمود خيارات التغيير -->
+                        <div class="image-controls-col">
+                            <!-- أزرار التبديل بين الطرق -->
+                            <div class="image-source-tabs">
+                                <button type="button" class="img-tab-btn active" data-tab="upload" onclick="switchImgTab('upload', this, 'modal')">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i> رفع من الجهاز
+                                </button>
+                                <button type="button" class="img-tab-btn" data-tab="presets" onclick="switchImgTab('presets', this, 'modal')">
+                                    <i class="fa-solid fa-images"></i> اختيار من الصور
+                                </button>
+                                <button type="button" class="img-tab-btn" data-tab="url" onclick="switchImgTab('url', this, 'modal')">
+                                    <i class="fa-solid fa-link"></i> رابط أو اسم ملف
+                                </button>
+                            </div>
+
+                            <!-- تبويب 1: رفع صورة من الجهاز -->
+                            <div class="img-tab-content active" id="modalImgTabUpload">
+                                <div class="image-dropzone" id="schoolDropzone" onclick="document.getElementById('sImageFileInput').click()">
+                                    <input type="file" id="sImageFileInput" accept="image/*" style="display:none" onchange="handleSchoolImageFileUpload(this, 'modal')">
+                                    <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                                    <p class="dropzone-text">اضغط لاختيار صورة من جهازك أو اسحبها هنا</p>
+                                    <span class="dropzone-hint">يدعم JPG, PNG, WEBP (يتم تحسين الحجم وضغطه تلقائياً)</span>
+                                </div>
+                            </div>
+
+                            <!-- تبويب 2: معرض الصور المتاحة -->
+                            <div class="img-tab-content" id="modalImgTabPresets">
+                                <div class="image-presets-grid" id="modalImagePresetsGrid">
+                                    <!-- يتم بناؤه بالجافاسكريبت -->
+                                </div>
+                            </div>
+
+                            <!-- تبويب 3: رابط مخصص أو اسم ملف -->
+                            <div class="img-tab-content" id="modalImgTabUrl">
+                                <div class="url-input-wrap">
+                                    <input type="text" class="admin-input" id="sImage" placeholder="مثال: q.jpeg أو https://..." oninput="onSchoolImageInputChanged(this.value, 'modal')">
+                                    <small style="color:var(--text-muted);display:block;margin-top:6px;font-size:11px;">
+                                        يمكنك كتابة اسم صورة موجودة في المشروع (مثل: a.jpeg, i.jpeg) أو لصق رابط صورة مباشرة من الإنترنت.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group col-span-2">
                     <label class="form-label">رابط موقع المدرسة</label>
@@ -900,6 +958,83 @@
             <button class="btn-modal-save" onclick="saveSchool()">
                 <i class="fa-solid fa-floppy-disk"></i>
                 حفظ المدرسة
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== QUICK SCHOOL IMAGE MODAL ====== -->
+<div class="modal-overlay" id="quickImageModal">
+    <div class="modal-box large-modal">
+        <div class="modal-header">
+            <div>
+                <h2 class="modal-title" id="quickImageModalTitle"><i class="fa-solid fa-camera" style="color:var(--primary);margin-left:8px;"></i> تغيير صورة المدرسة</h2>
+                <p id="quickImageSchoolName" style="font-size:12px;color:var(--text-muted);margin-top:2px;">اختر صورة جديدة للمدرسة أو ارفعها من جهازك</p>
+            </div>
+            <button class="modal-close" onclick="closeQuickImageModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="quickImageSchoolId">
+            <div class="image-uploader-box quick-mode">
+                <!-- Preview Column -->
+                <div class="image-preview-col">
+                    <div class="image-preview-wrapper" id="quickImgPreviewWrapper" style="height:150px;">
+                        <img id="quickImgPreview" src="q.jpeg" alt="معاينة الصورة" onerror="this.src='q.jpeg'">
+                        <div class="image-preview-badge" id="quickImgBadge">صورة حالية</div>
+                    </div>
+                    <button type="button" class="btn-clear-image" onclick="resetQuickImageToDefault()" title="إعادة تعيين للصورة الافتراضية">
+                        <i class="fa-solid fa-rotate-left"></i> افتراضي
+                    </button>
+                </div>
+
+                <!-- Controls Column -->
+                <div class="image-controls-col">
+                    <div class="image-source-tabs">
+                        <button type="button" class="img-tab-btn active" data-tab="upload" onclick="switchImgTab('upload', this, 'quick')">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i> رفع من الجهاز
+                        </button>
+                        <button type="button" class="img-tab-btn" data-tab="presets" onclick="switchImgTab('presets', this, 'quick')">
+                            <i class="fa-solid fa-images"></i> اختيار من الصور
+                        </button>
+                        <button type="button" class="img-tab-btn" data-tab="url" onclick="switchImgTab('url', this, 'quick')">
+                            <i class="fa-solid fa-link"></i> رابط أو اسم ملف
+                        </button>
+                    </div>
+
+                    <!-- Tab 1: Upload from device -->
+                    <div class="img-tab-content active" id="quickImgTabUpload">
+                        <div class="image-dropzone" id="quickDropzone" onclick="document.getElementById('quickImageFileInput').click()">
+                            <input type="file" id="quickImageFileInput" accept="image/*" style="display:none" onchange="handleSchoolImageFileUpload(this, 'quick')">
+                            <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                            <p class="dropzone-text">اضغط لاختيار صورة من جهازك أو اسحبها هنا</p>
+                            <span class="dropzone-hint">يدعم JPG, PNG, WEBP (يتم ضغط الحجم تلقائياً لتناسب المتصفح)</span>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Preset Gallery -->
+                    <div class="img-tab-content" id="quickImgTabPresets">
+                        <div class="image-presets-grid" id="quickImagePresetsGrid">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: URL or Filename -->
+                    <div class="img-tab-content" id="quickImgTabUrl">
+                        <div class="url-input-wrap">
+                            <input type="text" class="admin-input" id="quickImageInput" placeholder="مثال: q.jpeg أو https://..." oninput="onSchoolImageInputChanged(this.value, 'quick')">
+                            <small style="color:var(--text-muted);display:block;margin-top:6px;font-size:11px;">
+                                يمكنك كتابة اسم صورة موجودة في المشروع (مثل: a.jpeg, i.jpeg) أو لصق رابط صورة مباشر من الإنترنت.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-cancel" onclick="closeQuickImageModal()">إلغاء</button>
+            <button class="btn-modal-save" onclick="saveQuickSchoolImage()">
+                <i class="fa-solid fa-floppy-disk"></i>
+                حفظ وتطبيق الصورة
             </button>
         </div>
     </div>
