@@ -167,9 +167,11 @@ function normalizeArabicText(text) {
 
 
 window.addEventListener('click', function() {
-        var music = document.getElementById('bgMusic');
-        music.play();
-    }, { once: true }); 
+    const music = document.getElementById('bgMusic');
+    if (music) {
+        music.play().catch(err => console.warn('Unable to start background music:', err));
+    }
+}, { once: true });
 
 
 

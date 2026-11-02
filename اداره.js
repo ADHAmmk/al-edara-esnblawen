@@ -596,9 +596,11 @@ function getFilteredSchools() {
 }
 
 function renderSchoolCard(school) {
-    const isLive = school.hasLiveSite && Boolean(school.link && school.link.trim() !== "");
-    const siteUrl = isLive ? school.link : "https://el-sadat-school.vercel.app/";
-    const targetAttr = 'target="_blank" rel="noopener noreferrer"';
+    const schoolPageUrl = `schools/school-${school.id}.html`;
+    const configuredLink = typeof school.link === "string" ? school.link.trim() : "";
+    const isExternalSite = school.hasLiveSite && /^https?:\/\//i.test(configuredLink);
+    const siteUrl = isExternalSite ? configuredLink : schoolPageUrl;
+    const targetAttr = isExternalSite ? 'target="_blank" rel="noopener noreferrer"' : "";
 
     return `
         <article class="school-card" data-id="${school.id}">
@@ -610,7 +612,7 @@ function renderSchoolCard(school) {
                 </span>
                 <span class="card-status-badge">
                     <span class="dot"></span>
-                    ${isLive ? 'بوابة إلكترونية نشطة' : 'مقيد بالمنظومة'}
+                    ${isExternalSite ? 'موقع رسمي خارجي' : 'صفحة المدرسة'}
                 </span>
             </div>
             
