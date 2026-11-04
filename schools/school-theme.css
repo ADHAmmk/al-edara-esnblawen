@@ -1701,3 +1701,48 @@ textarea.form-input {
         text-align: center;
     }
 }
+
+/* ==========================================================================
+   Admin & Music Action Buttons
+   ========================================================================== */
+.btn-school-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #F3CA65 0%, #D9A72E 50%, #B8851B 100%);
+    color: #002824 !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(217, 167, 46, 0.35);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.btn-school-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(217, 167, 46, 0.5);
+    filter: brightness(1.08);
+}
+
+.music-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.music-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+

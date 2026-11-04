@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدرسة | إدارة السنبلاوين التعليمية</title>
+    <link rel="shortcut icon" href="../مدريه.png" type="image/x-icon">
+    
+    <!-- Icons & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Admin Base & Custom School Stylesheet -->
+    <link rel="stylesheet" href="../admin.css">
+    <link rel="stylesheet" href="school-admin.css">
+</head>
+<body>
+
+<!-- ====== LOGIN SCREEN ====== -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-bg-mesh"></div>
+    <div class="login-orb login-orb-1"></div>
+    <div class="login-orb login-orb-2"></div>
+
+    <div class="login-box" id="loginBox">
+        <div class="login-logo-wrap">
+            <div class="login-logo-ring">
+                <img src="../مدريه.png" alt="شعار الإدارة" class="login-logo-img">
+            </div>
+            <div class="login-logo-glow"></div>
+        </div>
+
+        <div class="login-titles">
+            <div class="login-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                منطقة محمية - بوابة إدارة المدرسة
+            </div>
+            <h1 class="login-main-title">لوحة تحكم المدرسة</h1>
+            <p class="login-sub-title">إدارة السنبلاوين التعليمية • مديرية التربية والتعليم</p>
+        </div>
+
+        <div class="login-form">
+            <div class="login-field-wrap">
+                <i class="fa-solid fa-lock login-field-icon"></i>
+                <input
+                    type="password"
+                    id="schoolPasswordInput"
+                    class="login-input"
+                    placeholder="أدخل كلمة المرور الخاصة بالمدرسة"
+                    autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter') attemptLogin()"
+                >
+                <button type="button" class="login-eye-btn" onclick="togglePasswordVisibility()" title="إظهار/إخفاء">
+                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
+
+            <div class="login-error" id="loginError">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى</span>
+            </div>
+
+            <button class="login-btn" onclick="attemptLogin()">
+                <span class="login-btn-text">دخول لوحة تحكم المدرسة</span>
+                <i class="fa-solid fa-arrow-left login-btn-icon"></i>
+                <div class="login-btn-shimmer"></div>
+            </button>
+        </div>
+
+        <div class="login-footer-hint">
+            <i class="fa-solid fa-shield-halved"></i>
+            منطقة محمية - مخصصة لإدارة المدرسة المعتمدة
+        </div>
+    </div>
+</div>
+
+<!-- Animated Background -->
+<div class="bg-mesh"></div>
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <img src="../مدريه.png" alt="شعار الإدارة">
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-main">لوحة تحكم المدرسة</span>
+                <span class="sidebar-brand-sub" id="sidebarSchoolSub">إدارة السنبلاوين</span>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" title="طي القائمة">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
+    </div>
+
+    <!-- Compact School Selector in Sidebar -->
+    <div class="sidebar-school-box">
+        <label class="sidebar-school-label" for="schoolSelector">
+            <i class="fa-solid fa-school"></i>
+            المدرسة الحالية:
+        </label>
+        <select id="schoolSelector" class="sidebar-school-select" onchange="onSchoolSelectChange(this.value)">
+            <!-- Populated dynamically with 18 schools -->
+        </select>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">إدارة موقع المدرسة</div>
+        <ul>
+            <li>
+                <a href="#" class="nav-item active" data-panel="dashboard">
+                    <span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>
+                    <span class="nav-text">لوحة المعلومات</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="general">
+                    <span class="nav-icon"><i class="fa-solid fa-school"></i></span>
+                    <span class="nav-text">بيانات وهوية المدرسة</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="announcements">
+                    <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                    <span class="nav-text">شريط التنبيهات والإعلانات</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="stats">
+                    <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+                    <span class="nav-text">الأرقام والإحصائيات</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="vision">
+                    <span class="nav-icon"><i class="fa-solid fa-compass"></i></span>
+                    <span class="nav-text">الرؤية والرسالة والقيادة</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="facilities">
+                    <span class="nav-icon"><i class="fa-solid fa-flask-vial"></i></span>
+                    <span class="nav-text">المعامل والمرافق</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="schedule">
+                    <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                    <span class="nav-text">جدول الحصص الأسبوعي</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="services">
+                    <span class="nav-icon"><i class="fa-solid fa-laptop-code"></i></span>
+                    <span class="nav-text">الخدمات الرقمية للطلاب</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="students">
+                    <span class="nav-icon"><i class="fa-solid fa-user-graduate"></i></span>
+                    <span class="nav-text">قاعدة بيانات الطلاب والنتائج</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="faq">
+                    <span class="nav-icon"><i class="fa-solid fa-circle-question"></i></span>
+                    <span class="nav-text">الأسئلة الشائعة</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="media">
+                    <span class="nav-icon"><i class="fa-solid fa-music"></i></span>
+                    <span class="nav-text">النشيد الوطني والوسائط</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="footer">
+                    <span class="nav-icon"><i class="fa-solid fa-address-book"></i></span>
+                    <span class="nav-text">تذييل الصفحة والتواصل</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" data-panel="backup">
+                    <span class="nav-icon"><i class="fa-solid fa-hard-drive"></i></span>
+                    <span class="nav-text">النسخ الاحتياطي وإعادة الضبط</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label" style="margin-top:20px;">روابط سريعة</div>
+        <ul>
+            <li>
+                <a href="../admin.html" class="nav-item">
+                    <span class="nav-icon"><i class="fa-solid fa-building-columns"></i></span>
+                    <span class="nav-text">لوحة تحكم الإدارة العامة</span>
+                </a>
+            </li>
+            <li>
+                <a href="../index.html" class="nav-item">
+                    <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="nav-text">بوابة إدارة السنبلاوين</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="doLogout(); return false;" class="nav-item" style="color:var(--red);">
+                    <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <span class="nav-text">تسجيل الخروج</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="school-1.html" target="_blank" class="preview-site-btn" id="sidebarPreviewBtn">
+            <i class="fa-solid fa-eye"></i>
+            <span>معاينة موقع المدرسة</span>
+        </a>
+    </div>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Main Wrapper -->
+<div class="main-wrapper" id="mainWrapper">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-right">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="فتح القائمة">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="page-breadcrumb">
+                <i class="fa-solid fa-school"></i>
+                <span id="topSchoolTitle" style="color:var(--primary);font-weight:800;">مدرسة السادات الثانوية بنين</span>
+                <span class="active-school-badge" id="topSchoolBadge">ثانوي عام</span>
+                <span id="unsavedBadge" class="save-badge-pill" style="display:none;">
+                    <i class="fa-solid fa-circle-exclamation"></i> تعديلات غير محفوظة
+                </span>
+            </div>
+        </div>
+
+        <div class="header-left">
+            <div class="header-time" id="headerTime">--:--:--</div>
+
+            <!-- Preview Live School Site Button -->
+            <a href="school-1.html" target="_blank" class="header-action-btn" id="btnPreviewSchool" title="معاينة موقع المدرسة في تبويب جديد">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+
+            <!-- Master Save Button -->
+            <button type="button" class="header-action-btn save-all-btn" id="btnSaveAll" onclick="saveAllChanges()" title="حفظ جميع التعديلات">
+                <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+
+            <!-- Logout Button -->
+            <button type="button" class="header-action-btn logout-btn" onclick="doLogout()" title="تسجيل الخروج">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Panels Container -->
+    <div class="panels-container">
+
+        <!-- ================= PANEL 1: DASHBOARD ================= -->
+        <div class="panel active" id="panel-dashboard">
+            <div class="glass-card" style="margin-bottom:24px;background:linear-gradient(135deg,rgba(0,200,150,0.12),rgba(15,31,56,0.95));border:1px solid rgba(0,200,150,0.35);">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+                    <div>
+                        <span class="table-type-badge badge-boys" id="dashSchoolType">ثانوي عام</span>
+                        <h2 style="font-size:22px;font-weight:900;margin:10px 0 6px;" id="dashSchoolName">مدرسة السادات الثانوية بنين</h2>
+                        <p style="color:var(--text-secondary);font-size:13.5px;" id="dashSchoolCode">كود المدرسة: 210408 • إدارة السنبلاوين التعليمية</p>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button type="button" class="btn-primary-action" onclick="switchPanel('general')">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            تعديل بيانات المدرسة
+                        </button>
+                        <button type="button" class="btn-primary-action" style="background:rgba(245,158,11,0.2);color:var(--gold);border:1px solid rgba(245,158,11,0.4);" onclick="switchPanel('students')">
+                            <i class="fa-solid fa-user-plus"></i>
+                            إدارة نتائج الطلاب
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="stats-overview-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(0,200,150,0.15);color:var(--primary);"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-num" id="dashStudentsCount">1,350</div>
+                        <div class="stat-lbl">طاقة استيعاب الطلاب</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(59,130,246,0.15);color:#60A5FA;"><i class="fa-solid fa-door-open"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-num" id="dashClassesCount">24</div>
+                        <div class="stat-lbl">الفصول والقاعات</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--gold);"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-num" id="dashTeachersCount">75</div>
+                        <div class="stat-lbl">الكادر التعليمي</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(124,58,237,0.15);color:#A78BFA;"><i class="fa-solid fa-id-card-clip"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-num" id="dashInquiryNum">4</div>
+                        <div class="stat-lbl">طلاب مسجلون للاستعلام</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access Sections -->
+            <div class="section-title">
+                <i class="fa-solid fa-bolt"></i>
+                إجراءات سريعة لموقع المدرسة
+            </div>
+            <div class="quick-actions-grid">
+                <button class="quick-action-card" onclick="switchPanel('general')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#00C896,#00a07a)"><i class="fa-solid fa-camera"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">تغيير صورة الواجهة والبيانات</div>
+                        <div class="qa-desc">تعديل اسم المدرسة، النبذة والصور</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="switchPanel('students')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#7C3AED,#5b21b6)"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">إدخال نتائج ودرجات الطلاب</div>
+                        <div class="qa-desc">إضافة طالب لنتائج الاستعلام الفوري</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="switchPanel('schedule')">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#F59E0B,#d97706)"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">جدول الحصص والتطبيقات</div>
+                        <div class="qa-desc">تحديث جدول الفصول من الأحد للخميس</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+                <button class="quick-action-card" onclick="saveAllChanges()">
+                    <div class="qa-icon" style="background:linear-gradient(135deg,#EF4444,#dc2626)"><i class="fa-solid fa-floppy-disk"></i></div>
+                    <div class="qa-info">
+                        <div class="qa-title">حفظ التعديلات فوراً</div>
+                        <div class="qa-desc">تطبيق التغييرات على موقع المدرسة</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left qa-arrow"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 2: GENERAL & HERO ================= -->
+        <div class="panel" id="panel-general">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">بيانات وهوية المدرسة</h1>
+                    <p class="panel-subtitle">الاسم الرسمي، الكود، الموقع الجغرافي، وصورة الواجهة الرئيسية</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-section-header">
+                    <i class="fa-solid fa-id-card" style="color:var(--primary);"></i>
+                    <h3>المعلومات الأساسية</h3>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="schoolName">اسم المدرسة الرسمي</label>
+                        <input type="text" class="admin-input" id="schoolName" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="schoolCode">كود المنظومة الإلكترونية</label>
+                        <input type="text" class="admin-input" id="schoolCode" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="schoolType">نوع المدرسة</label>
+                        <select class="admin-input admin-select" id="schoolType" onchange="markUnsaved()">
+                            <option value="boys">بنين</option>
+                            <option value="girls">بنات</option>
+                            <option value="mixed">مشترك</option>
+                            <option value="languages">رسمي لغات</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="schoolTypeName">المسمى التعريفي للنوع</label>
+                        <input type="text" class="admin-input" id="schoolTypeName" placeholder="مثال: ثانوي عام - بنين" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label class="form-label" for="schoolLocation">موقع وعنوان المدرسة</label>
+                        <input type="text" class="admin-input" id="schoolLocation" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="schoolArea">المنطقة أو القرية</label>
+                        <input type="text" class="admin-input" id="schoolArea" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="schoolFounded">سنة التأسيس</label>
+                        <input type="text" class="admin-input" id="schoolFounded" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <div class="card-section-header" style="margin-top:24px;">
+                    <i class="fa-solid fa-chalkboard" style="color:var(--gold);"></i>
+                    <h3>الواجهة الترحيبية (Hero Section)</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="heroTitle">عنوان الترحيب في الواجهة</label>
+                    <input type="text" class="admin-input" id="heroTitle" oninput="markUnsaved()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="heroDesc">النبذة التعريفية للمدرسة</label>
+                    <textarea class="admin-input admin-textarea" rows="3" id="heroDesc" oninput="markUnsaved()"></textarea>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="heroBtnPrimary">نص زر الإجراء الأول</label>
+                        <input type="text" class="admin-input" id="heroBtnPrimary" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="heroBtnSecondary">نص زر الإجراء الثاني</label>
+                        <input type="text" class="admin-input" id="heroBtnSecondary" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <!-- Hero Image Management -->
+                <div class="card-section-header" style="margin-top:24px;">
+                    <i class="fa-solid fa-camera" style="color:var(--primary);"></i>
+                    <h3>صورة واجهة المدرسة</h3>
+                </div>
+
+                <div class="hero-image-row">
+                    <div class="hero-preview-img-wrap">
+                        <img id="heroPreviewImg" src="../q.jpeg" alt="معاينة الصورة" onerror="this.src='../q.jpeg'">
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label" for="heroImageInput" style="font-size:12px;">مسار أو رابط الصورة:</label>
+                            <input type="text" class="admin-input" id="heroImageInput" oninput="updateHeroPreview(this.value); markUnsaved();">
+                        </div>
+                        <div class="form-group" style="margin-top:8px;">
+                            <label class="form-label" style="font-size:12px;">أو رفع صورة من جهازك:</label>
+                            <input type="file" accept="image/*" class="admin-input" onchange="handleCustomImageUpload(this)">
+                        </div>
+                        <div style="margin-top:10px;">
+                            <label class="form-label" style="font-size:12px;">أو اختر من صور مدارس الإدارة المتاحة:</label>
+                            <div class="preset-images-grid" id="presetImagesGrid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 3: ANNOUNCEMENTS ================= -->
+        <div class="panel" id="panel-announcements">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">شريط التنبيهات والإعلانات</h1>
+                    <p class="panel-subtitle">الشريط الإخباري أعلى موقع المدرسة ومواعيد العمل</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="form-group" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                    <input type="checkbox" id="noticeBarEnabled" style="width:20px;height:20px;cursor:pointer;" onchange="markUnsaved()">
+                    <label for="noticeBarEnabled" style="font-weight:700;cursor:pointer;color:var(--text-primary);">تفعيل شريط التنبيهات العلوي في موقع المدرسة</label>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="noticeBadge">شارة التنبيه (Badge Text)</label>
+                        <input type="text" class="admin-input" id="noticeBadge" placeholder="مثال: صرح معتمد / تنبيه هام" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="workHours">مواعيد استقبال أولياء الأمور والعمل</label>
+                        <input type="text" class="admin-input" id="workHours" placeholder="مثال: 8:00 ص - 2:00 م" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="noticeText">نص الإعلان أو التنبيه الإخباري الكامل</label>
+                    <textarea class="admin-input admin-textarea" rows="3" id="noticeText" placeholder="اكتب نص الإعلان الترحيبي أو التنبيه هنا..." oninput="markUnsaved()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 4: STATS ================= -->
+        <div class="panel" id="panel-stats">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الأرقام والإحصائيات</h1>
+                    <p class="panel-subtitle">الأرقام الرسمية للمدرسة التي تظهر في الواجهة الرئيسية</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="statStudents">عدد الطلاب والطاقة الاستيعابية</label>
+                        <input type="text" class="admin-input" id="statStudents" placeholder="مثال: 1,350 طالب" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="statClasses">عدد الفصول والقاعات الدراسية</label>
+                        <input type="text" class="admin-input" id="statClasses" placeholder="مثال: 24 فصلاً" oninput="markUnsaved()">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="statTeachers">عدد المعلمين والإداريين</label>
+                        <input type="text" class="admin-input" id="statTeachers" placeholder="مثال: 75 معلماً" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="statExtra">إحصائية أو ميزة إضافية</label>
+                        <input type="text" class="admin-input" id="statExtra" placeholder="مثال: 100% ربط تكنولوجي" oninput="markUnsaved()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 5: VISION & LEADERSHIP ================= -->
+        <div class="panel" id="panel-vision">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الرؤية والرسالة والقيادة</h1>
+                    <p class="panel-subtitle">التوجه الاستراتيجي للمدرسة وكلمة المدير التربوية</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="form-group">
+                    <label class="form-label" for="schoolVision"><i class="fa-solid fa-eye" style="color:var(--primary)"></i> رؤية المدرسة</label>
+                    <textarea class="admin-input admin-textarea" rows="3" id="schoolVision" oninput="markUnsaved()"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="schoolMission"><i class="fa-solid fa-bullseye" style="color:var(--gold)"></i> رسالة المدرسة</label>
+                    <textarea class="admin-input admin-textarea" rows="3" id="schoolMission" oninput="markUnsaved()"></textarea>
+                </div>
+
+                <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;">
+
+                <div class="form-group">
+                    <label class="form-label" for="principalName"><i class="fa-solid fa-user-tie"></i> المسمى الإداري لمدير المدرسة</label>
+                    <input type="text" class="admin-input" id="principalName" placeholder="مثال: إدارة مدرسة السادات الثانوية بنين" oninput="markUnsaved()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="principalSpeech">كلمة إدارة المدرسة الموجهة للطلاب وأولياء الأمور</label>
+                    <textarea class="admin-input admin-textarea" rows="4" id="principalSpeech" oninput="markUnsaved()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 6: FACILITIES ================= -->
+        <div class="panel" id="panel-facilities">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">المعامل والمرافق التعليمية</h1>
+                    <p class="panel-subtitle">المعامل والصروح والتجهيزات التي تخدم العملية التعليمية</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="openAddFacilityModal()">
+                        <i class="fa-solid fa-plus"></i> إضافة مرفق جديد
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-items-grid" id="facilitiesGrid">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- ================= PANEL 7: SCHEDULE ================= -->
+        <div class="panel" id="panel-schedule">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">جدول الحصص الأسبوعي</h1>
+                    <p class="panel-subtitle">مواعيد وتوزيع الحصص والتطبيقات العملية لكل يوم دراسي</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveCurrentDayScheduleFromFields(); saveAllChanges();">
+                        <i class="fa-solid fa-check"></i> حفظ وتطبيق الجدول
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="schedule-editor-tabs">
+                    <button type="button" class="schedule-day-btn active" data-day="sun" onclick="switchScheduleDay('sun')">الأحد</button>
+                    <button type="button" class="schedule-day-btn" data-day="mon" onclick="switchScheduleDay('mon')">الإثنين</button>
+                    <button type="button" class="schedule-day-btn" data-day="tue" onclick="switchScheduleDay('tue')">الثلاثاء</button>
+                    <button type="button" class="schedule-day-btn" data-day="wed" onclick="switchScheduleDay('wed')">الأربعاء</button>
+                    <button type="button" class="schedule-day-btn" data-day="thu" onclick="switchScheduleDay('thu')">الخميس</button>
+                </div>
+
+                <div id="scheduleEditorContainer">
+                    <!-- Populated dynamically with 6 periods -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 8: SERVICES ================= -->
+        <div class="panel" id="panel-services">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الخدمات الرقمية للطلاب</h1>
+                    <p class="panel-subtitle">بوابات التقييمات، الدعم الفني، وخدمات شؤون الطلاب</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="openAddServiceModal()">
+                        <i class="fa-solid fa-plus"></i> إضافة خدمة إلكترونية
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-items-grid" id="servicesGrid">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- ================= PANEL 9: STUDENTS DATABASE ================= -->
+        <div class="panel" id="panel-students">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">قاعدة بيانات الطلاب والاستعلام عن النتائج</h1>
+                    <p class="panel-subtitle">إدارة الطلاب المسجلين بالاستعلام الفوري لبيانات ودرجات وتقييمات المدرسة</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="openAddStudentModal()">
+                        <i class="fa-solid fa-user-plus"></i> إضافة طالب جديد
+                    </button>
+                    <button type="button" class="table-action-btn" onclick="exportStudentsJson()" title="تصدير كملف JSON">
+                        <i class="fa-solid fa-file-export"></i> تصدير
+                    </button>
+                    <label class="table-action-btn" style="cursor:pointer;" title="استيراد من JSON">
+                        <i class="fa-solid fa-file-import"></i> استيراد
+                        <input type="file" accept=".json" style="display:none;" onchange="importStudentsJson(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="students-toolbar">
+                <div class="students-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="ابحث بالاسم أو الكود أو رقم الجلوس..." oninput="onStudentSearchInput(this.value)">
+                </div>
+                <span class="active-school-badge" id="studentsTotalCount">
+                    0 طالب مسجل
+                </span>
+            </div>
+
+            <div class="students-table-wrap">
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>الطالب والملاحظات</th>
+                            <th>الكود / الجلوس</th>
+                            <th>الصف والشعبة</th>
+                            <th>المجموع والتقدير</th>
+                            <th>حالة القيد والحضور</th>
+                            <th>التقييمات</th>
+                            <th style="text-align:left;">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 10: FAQ ================= -->
+        <div class="panel" id="panel-faq">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">الأسئلة الشائعة</h1>
+                    <p class="panel-subtitle">إجابات الاستفسارات المتكررة للطلاب وأولياء الأمور</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="openAddFaqModal()">
+                        <i class="fa-solid fa-plus"></i> إضافة سؤال جديد
+                    </button>
+                </div>
+            </div>
+
+            <div id="faqsList">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- ================= PANEL 11: MEDIA & ANTHEM ================= -->
+        <div class="panel" id="panel-media">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">النشيد الوطني والوسائط الصوتية</h1>
+                    <p class="panel-subtitle">التحكم في تشغيل النشيد الوطني المصري بالموقع</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="audio-toggle-card">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,200,150,0.15);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:22px;">
+                            <i class="fa-solid fa-music"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size:16px;font-weight:700;">مشغل النشيد الوطني المصري</h4>
+                            <p style="font-size:13px;color:var(--text-secondary);">إظهار زر النشيد الوطني في أعلى صفحة المدرسة</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <input type="checkbox" id="anthemEnabled" style="width:22px;height:22px;cursor:pointer;" onchange="markUnsaved()">
+                        <label for="anthemEnabled" style="font-weight:700;cursor:pointer;color:var(--text-primary);">تفعيل المشغل بالموقع</label>
+                    </div>
+                </div>
+
+                <div class="form-grid-2" style="margin-top:20px;">
+                    <div class="form-group">
+                        <label class="form-label" for="anthemSrc">مسار ملف الصوت (Audio URL)</label>
+                        <input type="text" class="admin-input" id="anthemSrc" placeholder="./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="anthemBtnText">نص زر النشيد الوطني</label>
+                        <input type="text" class="admin-input" id="anthemBtnText" placeholder="🔊 تشغيل النشيد الوطني" oninput="markUnsaved()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 12: FOOTER & CONTACT ================= -->
+        <div class="panel" id="panel-footer">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">تذييل الصفحة والتواصل</h1>
+                    <p class="panel-subtitle">بيانات الاتصال، أرقام الهاتف، وصفحة فيسبوك وحقوق الملكية</p>
+                </div>
+                <div class="panel-actions">
+                    <button type="button" class="btn-primary-action" onclick="saveAllChanges()">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="form-group">
+                    <label class="form-label" for="footerDesc">نبذة المدرسة في تذييل الموقع</label>
+                    <textarea class="admin-input admin-textarea" rows="3" id="footerDesc" oninput="markUnsaved()"></textarea>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="footerPhone">رقم الهاتف / الواتساب</label>
+                        <input type="text" class="admin-input" id="footerPhone" placeholder="050-6690123" oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="footerEmail">البريد الإلكتروني الرسمي</label>
+                        <input type="text" class="admin-input" id="footerEmail" oninput="markUnsaved()">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="footerFacebook">رابط صفحة المدرسة على الفيسبوك</label>
+                        <input type="text" class="admin-input" id="footerFacebook" placeholder="https://facebook.com/..." oninput="markUnsaved()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="footerCopyright">نص حقوق الملكية في الأسفل</label>
+                        <input type="text" class="admin-input" id="footerCopyright" oninput="markUnsaved()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL 13: BACKUP & RESTORE ================= -->
+        <div class="panel" id="panel-backup">
+            <div class="panel-header">
+                <div>
+                    <h1 class="panel-title">النسخ الاحتياطي وإعادة الضبط</h1>
+                    <p class="panel-subtitle">تصدير واستيراد بيانات المدرسة وإمكانية إعادة التعيين</p>
+                </div>
+            </div>
+
+            <div class="admin-items-grid">
+                <div class="admin-item-card">
+                    <div class="admin-item-header">
+                        <div class="admin-item-icon" style="background:rgba(0,200,150,0.15);color:var(--primary);"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+                        <div class="admin-item-title">تنزيل نسخة احتياطية</div>
+                    </div>
+                    <p class="admin-item-desc">احفظ كافة إعدادات المدرسة والطلاب والمرافق والجداول في ملف JSON يمكنك استرجاعه في أي وقت.</p>
+                    <button type="button" class="btn-primary-action" onclick="downloadFullSchoolBackup()">
+                        <i class="fa-solid fa-download"></i>
+                        تحميل ملف النسخة الاحتياطية
+                    </button>
+                </div>
+
+                <div class="admin-item-card">
+                    <div class="admin-item-header">
+                        <div class="admin-item-icon" style="background:rgba(59,130,246,0.15);color:#60A5FA;"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                        <div class="admin-item-title">استرجاع نسخة سابقة</div>
+                    </div>
+                    <p class="admin-item-desc">اختر ملف نسخة احتياطية بتنسيق JSON لاستعادة كافة بيانات موقع المدرسة دفعة واحدة.</p>
+                    <label class="btn-primary-action" style="cursor:pointer;text-align:center;">
+                        <i class="fa-solid fa-upload"></i>
+                        اختيار ملف النسخة واستعادتها
+                        <input type="file" accept=".json" style="display:none;" onchange="restoreSchoolBackup(this)">
+                    </label>
+                </div>
+
+                <div class="admin-item-card" style="border-color:rgba(239,68,68,0.3);">
+                    <div class="admin-item-header">
+                        <div class="admin-item-icon" style="background:rgba(239,68,68,0.15);color:var(--red);"><i class="fa-solid fa-rotate-left"></i></div>
+                        <div class="admin-item-title" style="color:var(--red);">إعادة الضبط الافتراضي</div>
+                    </div>
+                    <p class="admin-item-desc">استعادة البيانات والإعدادات الأصلية الافتراضية الخاصة بهذه المدرسة وإلغاء أي تعديلات تمت عليها.</p>
+                    <button type="button" class="btn-primary-action" style="background:var(--red);border-color:var(--red);color:#fff;" onclick="resetSchoolToDefaults()">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        استعادة الإعدادات الأصلية
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Facility Modal -->
+<div class="modal-overlay" id="facilityModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title" id="facilityModalTitle">إضافة مرفق / معمل جديد</h3>
+            <button type="button" class="modal-close" onclick="closeModal('facilityModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="facilityEditIndex" value="-1">
+            <div class="form-group">
+                <label class="form-label" for="facilityTitleInput">عنوان المرفق أو القاعة</label>
+                <input type="text" class="admin-input" id="facilityTitleInput" placeholder="مثال: معامل العلوم المتكاملة">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="facilityIconInput">الأيقونة (FontAwesome class)</label>
+                <input type="text" class="admin-input" id="facilityIconInput" placeholder="مثال: fa-flask-vial أو fa-laptop-code">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="facilityDescInput">الوصف التفصيلي للتجهيزات والخدمة</label>
+                <textarea class="admin-input admin-textarea" rows="3" id="facilityDescInput" placeholder="اكتب تفاصيل المرفق وما يحتويه من أدوات وأجهزة..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-primary-action" onclick="saveFacilityModal()">حفظ المرفق</button>
+            <button type="button" class="table-action-btn" onclick="closeModal('facilityModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- Service Modal -->
+<div class="modal-overlay" id="serviceModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title" id="serviceModalTitle">إضافة خدمة إلكترونية</h3>
+            <button type="button" class="modal-close" onclick="closeModal('serviceModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="serviceEditIndex" value="-1">
+            <div class="form-group">
+                <label class="form-label" for="serviceTitleInput">عنوان الخدمة</label>
+                <input type="text" class="admin-input" id="serviceTitleInput" placeholder="مثال: التقييمات والأداءات الأسبوعية">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="serviceIconInput">الأيقونة (FontAwesome)</label>
+                <input type="text" class="admin-input" id="serviceIconInput" placeholder="مثال: fa-clipboard-check">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="serviceDescInput">وصف الخدمة</label>
+                <textarea class="admin-input admin-textarea" rows="2" id="serviceDescInput" placeholder="نبذة مختصرة عن الخدمة المقدمة للطلاب..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="serviceLinkInput">رابط الخدمة (URL)</label>
+                <input type="text" class="admin-input" id="serviceLinkInput" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="serviceBtnTextInput">نص الزر</label>
+                <input type="text" class="admin-input" id="serviceBtnTextInput" placeholder="مثال: دخول منصة التقييمات">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-primary-action" onclick="saveServiceModal()">حفظ الخدمة</button>
+            <button type="button" class="table-action-btn" onclick="closeModal('serviceModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- Student Modal -->
+<div class="modal-overlay" id="studentModal">
+    <div class="modal-box large-modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="studentModalTitle">إضافة طالب جديد</h3>
+            <button type="button" class="modal-close" onclick="closeModal('studentModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body" style="max-height:70vh;overflow-y:auto;">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label" for="stName">اسم الطالب ثلاثي أو رباعي</label>
+                    <input type="text" class="admin-input" id="stName" placeholder="مثال: أحمد محمد علي">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stCode">كود الطالب</label>
+                    <input type="text" class="admin-input" id="stCode" placeholder="مثال: 2104081">
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label class="form-label" for="stSeat">رقم الجلوس</label>
+                    <input type="text" class="admin-input" id="stSeat" placeholder="مثال: 14520">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stGrade">الصف الدراسي</label>
+                    <select class="admin-input admin-select" id="stGrade">
+                        <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                        <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                        <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stSection">الشعبة / التخصص</label>
+                    <select class="admin-input admin-select" id="stSection">
+                        <option value="عام">عام</option>
+                        <option value="علمي علوم">علمي علوم</option>
+                        <option value="علمي رياضة">علمي رياضة</option>
+                        <option value="أدبي">أدبي</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label" for="stStatus">حالة القيد</label>
+                    <input type="text" class="admin-input" id="stStatus" placeholder="مثال: مقيد بانتظام">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stStatusType">نوع شارة الحالة</label>
+                    <select class="admin-input admin-select" id="stStatusType">
+                        <option value="success">أخضر (ناجح / منتظم)</option>
+                        <option value="info">أزرق (عادي / مستقر)</option>
+                        <option value="warning">أصفر (تنبيه / متابعة)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label class="form-label" for="stAttendance">نسبة الحضور</label>
+                    <input type="text" class="admin-input" id="stAttendance" placeholder="مثال: 95.0%">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stTablet">حالة التابلت المدرسي</label>
+                    <input type="text" class="admin-input" id="stTablet" placeholder="مثال: مفعل ومسجل بالمنظومة">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stEvaluations">التقييمات الأسبوعية</label>
+                    <input type="text" class="admin-input" id="stEvaluations" placeholder="مثال: مكتملة وممتازة (أ)">
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label class="form-label" for="stTotalScore">المجموع الكلي</label>
+                    <input type="text" class="admin-input" id="stTotalScore" placeholder="مثال: 266 / 280">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stPercentage">النسبة المئوية</label>
+                    <input type="text" class="admin-input" id="stPercentage" placeholder="مثال: 95.0%">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stRating">التقدير العام</label>
+                    <input type="text" class="admin-input" id="stRating" placeholder="مثال: ممتاز / أوائل المدرسة">
+                </div>
+            </div>
+
+            <!-- Detailed Subject Grades -->
+            <div style="margin-top:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <label class="form-label" style="margin:0;"><i class="fa-solid fa-award"></i> بيان درجات المواد التفصيلية</label>
+                    <button type="button" class="table-action-btn" onclick="addGradeRow()"><i class="fa-solid fa-plus"></i> إضافة مادة</button>
+                </div>
+                <div id="studentGradesContainer">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top:16px;">
+                <label class="form-label" for="stNotes">ملاحظات وتوجيه إدارة المدرسة للطالب</label>
+                <textarea class="admin-input admin-textarea" rows="2" id="stNotes" placeholder="طالب متفوق ومتميز سلوكياً وأكاديمياً..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-primary-action" onclick="saveStudentModal()">حفظ بيانات الطالب</button>
+            <button type="button" class="table-action-btn" onclick="closeModal('studentModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Modal -->
+<div class="modal-overlay" id="faqModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title" id="faqModalTitle">إضافة سؤال شائع جديد</h3>
+            <button type="button" class="modal-close" onclick="closeModal('faqModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="faqEditIndex" value="-1">
+            <div class="form-group">
+                <label class="form-label" for="faqQuestionInput">نص السؤال</label>
+                <input type="text" class="admin-input" id="faqQuestionInput" placeholder="مثال: كيف يتم استلام التابلت المدرسي وتفعيله؟">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="faqAnswerInput">الإجابة التفصيلية</label>
+                <textarea class="admin-input admin-textarea" rows="4" id="faqAnswerInput" placeholder="اكتب إجابة السؤال هنا..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-primary-action" onclick="saveFaqModal()">حفظ السؤال</button>
+            <button type="button" class="table-action-btn" onclick="closeModal('faqModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="school-admin.js"></script>
+</body>
+</html>

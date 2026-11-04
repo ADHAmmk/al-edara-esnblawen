@@ -8,36 +8,16 @@
     <meta name="theme-color" content="#004C46">
     <link rel="shortcut icon" href="../مدريه.png" type="image/x-icon">
     
-    <!-- Icons & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- School Portal Stylesheet -->
     <link rel="stylesheet" href="school-theme.css">
     <title>مدرسة المقاطعة الثانوية المشتركة | البوابة الرسمية</title>
-
-    <style>
-        /* تصميم الزر */
-        .music-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            margin: 20px;
-        }
-        .music-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
 
-    <!-- Top Announcement Bar -->
     <div class="top-notice-bar">
         <div class="container">
             <div class="top-bar-right">
@@ -50,19 +30,13 @@
                     العودة لبوابة إدارة السنبلاوين
                 </a>
                 <audio id="bgMusic" loop>
-        <source src="./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- زر التحكم في الصوت -->
-    <button id="toggleBtn" class="music-btn" onclick="toggleMusic()">🔊 تشغيل النشيد الوطني</button>
-
+                    <source src="./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3" type="audio/mpeg">
+                </audio>
+                <button id="toggleBtn" class="music-btn" onclick="toggleMusic()">🔊 النشيد الوطني</button>
             </div>
         </div>
     </div>
 
-   
-
-    <!-- Main Navigation Bar -->
     <header class="school-navbar">
         <div class="nav-container">
             <div class="school-brand">
@@ -72,6 +46,7 @@
                 </div>
                 <div class="brand-info">
                     <h1>مدرسة المقاطعة الثانوية المشتركة</h1>
+                    <span>كود المنظومة الإلكترونية: 210415</span>
                 </div>
             </div>
 
@@ -83,7 +58,14 @@
                 <li><a href="#hero" class="nav-link active"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
                 <li><a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> عن المدرسة</a></li>
                 <li><a href="#facilities" class="nav-link"><i class="fa-solid fa-laptop-code"></i> المعامل والمرافق</a></li>
+                <li><a href="#schedule" class="nav-link"><i class="fa-solid fa-calendar-days"></i> الجدول المدرسي</a></li>
                 <li><a href="#services" class="nav-link"><i class="fa-solid fa-bolt"></i> الخدمات الرقمية</a></li>
+                <li>
+                    <a href="school-admin.html?id=2" class="btn-school-admin">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        لوحة التحكم
+                    </a>
+                </li>
                 <li>
                     <a href="../index.html#schools" class="btn-primary-action">
                         <i class="fa-solid fa-grip"></i>
@@ -94,7 +76,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="school-hero" id="hero">
         <div class="container">
             <div class="hero-grid">
@@ -118,6 +99,10 @@
                         <a href="#services" class="btn-hero-primary">
                             <i class="fa-solid fa-id-card-clip"></i>
                             الخدمات الإلكترونية للطلاب
+                        </a>
+                        <a href="#schedule" class="btn-hero-secondary">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            جدول الحصص والتطبيقات
                         </a>
                     </div>
 
@@ -155,7 +140,6 @@
         </div>
     </section>
 
-    <!-- Quick Features Ribbon -->
     <div class="quick-ticker-bar">
         <div class="container">
             <div class="ticker-items">
@@ -191,7 +175,6 @@
         </div>
     </div>
 
-    <!-- About Section: Vision & Mission -->
     <section class="section-pad" id="about">
         <div class="container">
             <div class="section-header">
@@ -206,7 +189,7 @@
                         <i class="fa-solid fa-eye"></i>
                     </div>
                     <h3>رؤية المدرسة</h3>
-                    <p class="vision-text"></p>
+                    <p class="vision-text">توفير تعليم ثانوي متميز قائم على مهارات القرن الحادي والعشرين والتحول الرقمي، وتخريج جيل مبدع متمسك بالقيم الوطنية قادر على التنافس العلمي والمعرفي.</p>
                 </div>
 
                 <div class="about-card gold-border">
@@ -214,13 +197,12 @@
                         <i class="fa-solid fa-bullseye"></i>
                     </div>
                     <h3>رسالة المدرسة</h3>
-                    <p class="mission-text"></p>
+                    <p class="mission-text">تقديم بيئة تربوية محفزة تسخر المعامل الذكية والشاشات التفاعلية لدعم التفكير النقدي لدى الطلاب، وتنمية قدرات الكادر التعليمي، وبناء شراكة مجتمعية وثيقة مع أولياء الأمور.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- School Leadership Message -->
     <section class="section-pad leadership-section">
         <div class="container">
             <div class="principal-card">
@@ -238,7 +220,6 @@
         </div>
     </section>
 
-    <!-- Facilities and Labs -->
     <section class="section-pad" id="facilities">
         <div class="container">
             <div class="section-header">
@@ -288,7 +269,56 @@
     </section>
 
 
-    <!-- Digital Student Services -->
+    <section class="section-pad" id="schedule" style="background: #F1F6F5;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill"><i class="fa-solid fa-calendar-check"></i> الخطة الدراسية</span>
+                <h3 class="section-title">الجدول الدراسي والتطبيقات الأسبوعية</h3>
+                <p class="section-desc">استعرض مواعيد الحصص والتطبيقات العملية والمراجعات الأسبوعية للفصول</p>
+            </div>
+
+            <div class="schedule-box">
+                <div class="schedule-tabs">
+                    <button class="tab-btn active" data-day="sun">الأحد</button>
+                    <button class="tab-btn" data-day="mon">الإثنين</button>
+                    <button class="tab-btn" data-day="tue">الثلاثاء</button>
+                    <button class="tab-btn" data-day="wed">الأربعاء</button>
+                    <button class="tab-btn" data-day="thu">الخميس</button>
+                </div>
+                <div class="schedule-day-content" data-day="sun">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى (8:00 - 8:45)</th><th>الحصة الثانية (8:45 - 9:30)</th><th>الحصة الثالثة (9:45 - 10:30)</th><th>الحصة الرابعة (10:30 - 11:15)</th><th>الحصة الخامسة (11:30 - 12:15)</th><th>الحصة السادسة (12:15 - 1:00)</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الرياضيات / الجبر</span></td><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">الفيزياء / الكيمياء</span></td><td><span class="badge-subject">تاريخ / جغرافيا</span></td><td><span class="badge-subject">حاسب آلي وتكنولوجيا</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="mon" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى (8:00 - 8:45)</th><th>الحصة الثانية (8:45 - 9:30)</th><th>الحصة الثالثة (9:45 - 10:30)</th><th>الحصة الرابعة (10:30 - 11:15)</th><th>الحصة الخامسة (11:30 - 12:15)</th><th>الحصة السادسة (12:15 - 1:00)</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الأحياء / الجيولوجيا</span></td><td><span class="badge-subject">التطبيقات والتقييم الأسبوعي</span></td><td><span class="badge-subject">اللغة الأجنبية الثانية</span></td><td><span class="badge-subject">تربية رياضية وصحية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="tue" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">الرياضيات</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">الفيزياء</span></td><td><span class="badge-subject">التاريخ</span></td><td><span class="badge-subject">اللغة الإنجليزية</span></td><td><span class="badge-subject">نشاط تربوي</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="wed" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">الكيمياء</span></td><td><span class="badge-subject">اللغة الأجنبية</span></td><td><span class="badge-subject">الرياضيات</span></td><td><span class="badge-subject">الأحياء</span></td><td><span class="badge-subject">تطبيقات عملية</span></td><td><span class="badge-subject">تربية رياضية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+                <div class="schedule-day-content" data-day="thu" style="display:none;">
+                    <div class="schedule-table-wrap"><table class="schedule-table">
+                        <thead><tr><th>الحصة الأولى</th><th>الحصة الثانية</th><th>الحصة الثالثة</th><th>الحصة الرابعة</th><th>الحصة الخامسة</th><th>الحصة السادسة</th></tr></thead>
+                        <tbody><tr><td><span class="badge-subject">المراجعة الشاملة</span></td><td><span class="badge-subject">أداء التقييم الأسبوعي</span></td><td><span class="badge-subject">اللغة العربية</span></td><td><span class="badge-subject">اللغة الأجنبية</span></td><td><span class="badge-subject">دوري أوائل الفصول</span></td><td><span class="badge-subject">أنشطة كشفية ورياضية</span></td></tr></tbody>
+                    </table></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section-pad" id="services">
         <div class="container">
             <div class="section-header">
@@ -333,7 +363,6 @@
 
             </div>
 
-            <!-- Student Inquiry Mock Box -->
             <div class="inquiry-mock-box">
                 <div class="inquiry-content">
                     <h3><i class="fa-solid fa-graduation-cap"></i> الاستعلام السريع عن درجات وحالة الطالب</h3>
@@ -353,7 +382,6 @@
         </div>
     </section>
 
-    <!-- FAQ Accordion -->
     <section class="section-pad" style="background: #ffffff;">
         <div class="container">
             <div class="section-header">
@@ -399,15 +427,23 @@
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="faq-answer">
-                        من خلال البوابة الإلكترونية للمدرسة، أو الحضور المباشر خلال المواعيد المخصصة لمقابلة أولياء الأمور يومي الأحد والثلاثاء.
+                        من خلال البوابة الإلكترونية للمدرسة (الاستعلام برقم الجلوس أو الكود)، أو الحضور المباشر للمدرسة خلال المواعيد المخصصة لمقابلة أولياء الأمور يومي الأحد والثلاثاء.
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <div class="school-nav-bar" style="background: #F4F7F6; border-top: 1px solid var(--border-color); padding: 22px 0;">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <a href="school-1.html" style="font-size: 14px; color: var(--primary); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-arrow-right"></i> المدرسة السابقة: مدرسة السادات الثانوية بنين
+            </a>
+            <a href="school-3.html" style="font-size: 14px; color: var(--primary); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                المدرسة التالية: أحمد لطفي السيد الثانوية بنين <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
 
-
-    <!-- School Footer -->
     <footer class="school-footer">
         <div class="container">
             <div class="footer-grid">
@@ -428,6 +464,7 @@
                     <ul class="footer-links">
                         <li><a href="#about"><i class="fa-solid fa-angle-left"></i> الرؤية والرسالة</a></li>
                         <li><a href="#facilities"><i class="fa-solid fa-angle-left"></i> المعامل والمرافق</a></li>
+                        <li><a href="#schedule"><i class="fa-solid fa-angle-left"></i> جدول الحصص الأسبوعي</a></li>
                         <li><a href="#services"><i class="fa-solid fa-angle-left"></i> التقييمات والأداءات</a></li>
                     </ul>
                 </div>
@@ -449,42 +486,6 @@
         </div>
     </footer>
 
-  
-
-
-
     <script src="school-script.js"></script>
-    <script>
-        var music = document.getElementById('bgMusic');
-        var btn = document.getElementById('toggleBtn');
-        var isPlaying = false;
-
-        // 1. تشغيل تلقائي مع أول نقرة في الصفحة لتجاوز قيود المتصفح
-        window.addEventListener('click', function startAudioOnInteraction() {
-            if (!isPlaying) {
-                music.play().then(() => {
-                    isPlaying = true;
-                    btn.textContent = "🔊 إيقاف الموسيقى";
-                }).catch(err => {
-                    console.log("لم يبدأ التشغيل:", err);
-                });
-            }
-        }, { once: true }); // تعمل مرة واحدة فقط عند أول نقرة
-
-        // 2. وظيفة الزر للتبديل بين التشغيل والإيقاف
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-                btn.textContent = "🔈 تشغيل النشيد الوطني";
-            } else {
-                music.play();
-                isPlaying = true;
-                btn.textContent = "🔊 إيقاف النشيد الوطني";
-            }
-        }
-    </script>
-    
-    
 </body>
 </html>

@@ -381,6 +381,10 @@ function generateHtml(school, index) {
                     <i class="fa-solid fa-arrow-right"></i>
                     العودة لبوابة إدارة السنبلاوين
                 </a>
+                <audio id="bgMusic" loop>
+                    <source src="./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3" type="audio/mpeg">
+                </audio>
+                <button id="toggleBtn" class="music-btn" onclick="toggleMusic()">🔊 النشيد الوطني</button>
             </div>
         </div>
     </div>
@@ -408,6 +412,12 @@ function generateHtml(school, index) {
                 <li><a href="#facilities" class="nav-link"><i class="fa-solid fa-laptop-code"></i> المعامل والمرافق</a></li>
                 <li><a href="#schedule" class="nav-link"><i class="fa-solid fa-calendar-days"></i> الجدول المدرسي</a></li>
                 <li><a href="#services" class="nav-link"><i class="fa-solid fa-bolt"></i> الخدمات الرقمية</a></li>
+                <li>
+                    <a href="school-admin.html?id=${school.id}" class="btn-school-admin">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        لوحة التحكم
+                    </a>
+                </li>
                 <li>
                     <a href="../index.html#schools" class="btn-primary-action">
                         <i class="fa-solid fa-grip"></i>
@@ -531,7 +541,7 @@ function generateHtml(school, index) {
                         <i class="fa-solid fa-eye"></i>
                     </div>
                     <h3>رؤية المدرسة</h3>
-                    <p class="vision-text"></p>
+                    <p class="vision-text">توفير تعليم ثانوي متميز قائم على مهارات القرن الحادي والعشرين والتحول الرقمي، وتخريج جيل مبدع متمسك بالقيم الوطنية قادر على التنافس العلمي والمعرفي.</p>
                 </div>
 
                 <div class="about-card gold-border">
@@ -539,7 +549,7 @@ function generateHtml(school, index) {
                         <i class="fa-solid fa-bullseye"></i>
                     </div>
                     <h3>رسالة المدرسة</h3>
-                    <p class="mission-text"></p>
+                    <p class="mission-text">تقديم بيئة تربوية محفزة تسخر المعامل الذكية والشاشات التفاعلية لدعم التفكير النقدي لدى الطلاب، وتنمية قدرات الكادر التعليمي، وبناء شراكة مجتمعية وثيقة مع أولياء الأمور.</p>
                 </div>
             </div>
         </div>

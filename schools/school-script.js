@@ -1,12 +1,11 @@
 /* ==========================================================================
    School Portal Interactive JavaScript - إدارة السنبلاوين التعليمية
+   Dynamic Engine with Full School Admin Control Sync
    ========================================================================== */
 
-/* ==========================================================================
-   قائمة أسماء الطلاب وبياناتهم - Students Database
-   يمكنك هنا وضع وتعديل أسماء الطلاب والدرجات وحالة الحضور والتقييمات بكل سهولة.
-   البحث يتم فقط في هذه القائمة، وإذا لم يكن الطالب مسجلاً يظهر خطأ (Error).
-   ========================================================================== */
+'use strict';
+
+// ======================== DEFAULT STUDENTS DATABASE ========================
 window.STUDENTS_DATABASE = [
     {
         name: "ادهم محمد",
@@ -15,7 +14,7 @@ window.STUDENTS_DATABASE = [
         grade: "الصف الثاني الثانوي",
         section: "علمي علوم",
         status: "مقيد بانتظام",
-        statusType: "success", // success | info | warning
+        statusType: "success",
         attendance: "96.5%",
         tabletStatus: "مفعل ومسجل بالمنظومة",
         evaluations: "مكتملة وممتازة (أ)",
@@ -100,57 +99,10 @@ window.STUDENTS_DATABASE = [
             { subject: "التاريخ", score: "43 / 60", state: "جيد" }
         ],
         notes: "يوصى بضرورة الالتزام بنظام الحضور والاهتمام بحل التقييمات الأسبوعية بانتظام لتحسين المجموع العام."
-    },
-    {
-        name: "مريم طارق الشربيني",
-        code: "2104085",
-        seatNumber: "14524",
-        grade: "الصف الثاني الثانوي",
-        section: "أدبي",
-        status: "مقيدة بانتظام",
-        statusType: "success",
-        attendance: "94.0%",
-        tabletStatus: "مفعل ومسجل بالمنظومة",
-        evaluations: "مكتملة وممتازة (أ)",
-        totalScore: "258 / 280",
-        percentage: "92.1%",
-        rating: "ممتاز",
-        grades: [
-            { subject: "اللغة العربية", score: "47 / 50", state: "ممتاز" },
-            { subject: "اللغة الإنجليزية", score: "46 / 50", state: "ممتاز" },
-            { subject: "التاريخ", score: "56 / 60", state: "ممتاز" },
-            { subject: "الجغرافيا", score: "55 / 60", state: "ممتاز" },
-            { subject: "علم النفس", score: "54 / 60", state: "ممتاز" }
-        ],
-        notes: "طالبة مجتهدة ومتميزة في المواد الأدبية والأنشطة الثقافية بالمدرسة."
-    },
-    {
-        name: "عمر شريف الدسوقي",
-        code: "2104086",
-        seatNumber: "14525",
-        grade: "الصف الثالث الثانوي",
-        section: "علمي علوم",
-        status: "مقيد بانتظام",
-        statusType: "info",
-        attendance: "91.5%",
-        tabletStatus: "مفعل ومسجل بالمنظومة",
-        evaluations: "مكتملة بانتظام (ب)",
-        totalScore: "356 / 410",
-        percentage: "86.8%",
-        rating: "جيد جداً مرتفع",
-        grades: [
-            { subject: "اللغة العربية", score: "70 / 80", state: "جيد جداً" },
-            { subject: "اللغة الإنجليزية", score: "44 / 50", state: "جيد جداً" },
-            { subject: "الأحياء", score: "54 / 60", state: "ممتاز" },
-            { subject: "الجيولوجيا", score: "55 / 60", state: "ممتاز" },
-            { subject: "الكيمياء", score: "51 / 60", state: "جيد جداً" },
-            { subject: "الفيزياء", score: "50 / 60", state: "جيد جداً" }
-        ],
-        notes: "أداء متميز وتطور ملحوظ في درجات الاختبارات التجريبية."
     }
 ];
 
-
+// Helper: Normalize Arabic string for query matching
 function normalizeArabicText(text) {
     if (!text) return "";
     return text
@@ -164,18 +116,7 @@ function normalizeArabicText(text) {
         .replace(/\s+/g, " ");
 }
 
-
-
-window.addEventListener('click', function() {
-    const music = document.getElementById('bgMusic');
-    if (music) {
-        music.play().catch(err => console.warn('Unable to start background music:', err));
-    }
-}, { once: true });
-
-
-
-
+// Student search function
 function findStudentData(query) {
     if (!query) return null;
     const qNorm = normalizeArabicText(query);
@@ -183,13 +124,11 @@ function findStudentData(query) {
 
     const db = window.STUDENTS_DATABASE || [];
 
-    // بحث بالاسم أو الكود أو رقم الجلوس في قاعدة البيانات
     const matched = db.find(s => {
         const nameNorm = normalizeArabicText(s.name || "");
         const codeNorm = normalizeArabicText(s.code || "");
         const seatNorm = normalizeArabicText(s.seatNumber || "");
 
-        // مطابقة الاسم: إما تطابق كامل أو جزء من الاسم (بشرط إدخال 3 أحرف فأكثر)
         const isNameMatch = (nameNorm === qNorm) || (qNorm.length >= 3 && nameNorm.includes(qNorm));
         const isCodeMatch = (codeNorm === qNorm);
         const isSeatMatch = (seatNorm === qNorm);
@@ -200,39 +139,268 @@ function findStudentData(query) {
     return matched || null;
 }
 
+// Get current school ID from pathname or query
+function getCurrentSchoolId() {
+    const pagePath = window.location.pathname;
+    const match = pagePath.match(/school-(\d+)\.html/);
+    if (match) return parseInt(match[1], 10);
+    const urlId = new URLSearchParams(window.location.search).get('id');
+    if (urlId) return parseInt(urlId, 10);
+    return 1;
+}
+
+// ======================== DOM INITIALIZATION ========================
 document.addEventListener("DOMContentLoaded", () => {
-    // 0. مزامنة صورة المدرسة المحدثة من لوحة التحكم تلقائياً
+    const schoolId = getCurrentSchoolId();
+
+    // 1. Sync and apply custom school data from LocalStorage
+    syncSchoolDataFromStorage(schoolId);
+
+    // 2. Inject School Admin Panel Links in Header, Nav and Footer
+    injectSchoolAdminLinks(schoolId);
+
+    // 3. Setup Mobile Navigation Toggle
+    initMobileNav();
+
+    // 4. Setup Schedule Tabs Switcher
+    initScheduleTabs();
+
+    // 5. Setup FAQ Accordion
+    initFaqAccordion();
+
+    // 6. Setup Student Inquiry Search
+    initStudentInquiry();
+
+    // 7. Setup Contact Form
+    initContactForm();
+
+    // 8. Setup National Anthem Music Player
+    initAnthemPlayer();
+});
+
+// ======================== STORAGE SYNCHRONIZATION ========================
+function syncSchoolDataFromStorage(schoolId) {
     try {
-        const savedSchools = JSON.parse(localStorage.getItem('admin_schools'));
-        if (Array.isArray(savedSchools) && savedSchools.length > 0) {
-            const pagePath = window.location.pathname;
-            const matchId = pagePath.match(/school-(\d+)\.html/);
-            let schoolInfo = null;
-            if (matchId) {
-                const sid = parseInt(matchId[1], 10);
-                schoolInfo = savedSchools.find(s => s.id === sid);
+        const raw = localStorage.getItem(`school_data_${schoolId}`);
+        let data = null;
+        if (raw) {
+            data = JSON.parse(raw);
+        }
+
+        // If custom data exists, apply all customized fields
+        if (data) {
+            // Update title
+            if (data.name) {
+                document.title = `${data.name} | البوابة الرسمية`;
             }
-            if (!schoolInfo) {
-                const pageTitle = document.title || '';
-                const brandText = document.querySelector('.school-brand-text h1')?.textContent || '';
-                schoolInfo = savedSchools.find(s => pageTitle.includes(s.name) || brandText.includes(s.name));
+
+            // Navbar Brand
+            const brandH1 = document.querySelector('.school-brand .brand-info h1');
+            if (brandH1 && data.name) brandH1.textContent = data.name;
+
+            const brandSpan = document.querySelector('.school-brand .brand-info span');
+            if (brandSpan && data.code) brandSpan.textContent = `كود المنظومة الإلكترونية: ${data.code}`;
+
+            // Top Notice Bar
+            const topBar = document.querySelector('.top-notice-bar');
+            if (topBar) {
+                if (data.noticeBarEnabled === false) {
+                    topBar.style.display = 'none';
+                } else {
+                    topBar.style.display = '';
+                    const badge = topBar.querySelector('.top-badge');
+                    if (badge && data.noticeBadge) {
+                        badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.noticeBadge}`;
+                    }
+                    const textSpan = topBar.querySelector('.top-bar-right span:not(.top-badge)');
+                    if (textSpan && data.noticeText) {
+                        textSpan.textContent = data.noticeText;
+                    }
+                }
             }
-            if (schoolInfo && schoolInfo.image) {
+
+            // Hero Section
+            const heroBadgeType = document.querySelector('.hero-badge-wrap .badge-tag:first-child');
+            if (heroBadgeType && data.typeName) {
+                heroBadgeType.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${data.typeName}`;
+            }
+
+            const heroBadgeCode = document.querySelector('.hero-badge-wrap .badge-code');
+            if (heroBadgeCode && data.code) {
+                heroBadgeCode.innerHTML = `<i class="fa-solid fa-fingerprint"></i> كود: ${data.code}`;
+            }
+
+            const heroBadgeLoc = document.querySelector('.hero-badge-wrap .badge-tag:last-child');
+            if (heroBadgeLoc && data.location) {
+                heroBadgeLoc.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.location}`;
+            }
+
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                if (data.heroTitle && data.heroTitle.includes('<span>')) {
+                    heroTitle.innerHTML = data.heroTitle;
+                } else if (data.name) {
+                    heroTitle.innerHTML = `مرحباً بكم في <span>${data.name}</span>`;
+                }
+            }
+
+            const heroDesc = document.querySelector('.hero-description');
+            if (heroDesc && data.description) {
+                heroDesc.textContent = `${data.description} نعمل برؤية رائدة لتخريج أجيال مبدعة ومسلحة بالمعرفة والمهارات التكنولوجية الحديثة وفق المعايير القومية للتعليم المصري.`;
+            }
+
+            // Hero Buttons
+            const btnP = document.querySelector('.hero-actions .btn-hero-primary');
+            if (btnP && data.heroBtnPrimary) {
+                btnP.innerHTML = `<i class="fa-solid fa-id-card-clip"></i> ${data.heroBtnPrimary}`;
+            }
+            const btnS = document.querySelector('.hero-actions .btn-hero-secondary');
+            if (btnS && data.heroBtnSecondary) {
+                btnS.innerHTML = `<i class="fa-solid fa-calendar-check"></i> ${data.heroBtnSecondary}`;
+            }
+
+            // Hero Stats
+            const statBoxes = document.querySelectorAll('.hero-stats-row .stat-box');
+            if (statBoxes.length >= 3) {
+                if (data.studentsCount) statBoxes[0].querySelector('.num').textContent = data.studentsCount;
+                if (data.classrooms) statBoxes[1].querySelector('.num').textContent = data.classrooms;
+                if (data.teachers) statBoxes[2].querySelector('.num').textContent = data.teachers;
+            }
+
+            // Hero Image
+            if (data.image) {
                 const heroImg = document.querySelector('.hero-img-wrapper img');
                 if (heroImg) {
-                    let src = schoolInfo.image;
-                    if (!src.startsWith('data:') && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('../')) {
+                    let src = data.image;
+                    if (!src.startsWith('data:') && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('../') && !src.startsWith('./')) {
                         src = '../' + src;
                     }
                     heroImg.src = src;
                 }
             }
-        }
-    } catch(err) {
-        console.warn('Notice syncing school image from storage:', err);
-    }
 
-    // 1. Mobile Menu Toggle
+            // Leadership
+            const pRole = document.querySelector('.principal-role');
+            if (pRole && data.principal) pRole.textContent = data.principal;
+
+            const pSpeech = document.querySelector('.principal-speech p');
+            if (pSpeech && data.speech) pSpeech.textContent = `"${data.speech}"`;
+
+            // Vision & Mission
+            const visionEl = document.querySelector('.vision-text');
+            if (visionEl && data.vision) visionEl.textContent = data.vision;
+
+            const missionEl = document.querySelector('.mission-text');
+            if (missionEl && data.mission) missionEl.textContent = data.mission;
+
+            // Facilities
+            if (Array.isArray(data.facilities) && data.facilities.length > 0) {
+                const facGrid = document.querySelector('.facilities-grid');
+                if (facGrid) {
+                    facGrid.innerHTML = data.facilities.map(f => `
+                        <div class="facility-card">
+                            <div class="facility-icon-wrap"><i class="fa-solid ${f.icon || 'fa-school'}"></i></div>
+                            <h4>${f.title}</h4>
+                            <p>${f.desc}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Digital Services
+            if (Array.isArray(data.services) && data.services.length > 0) {
+                const srvGrid = document.querySelector('.services-school-grid');
+                if (srvGrid) {
+                    srvGrid.innerHTML = data.services.map(s => `
+                        <div class="service-box-card">
+                            <div>
+                                <div class="srv-icon"><i class="fa-solid ${s.icon || 'fa-bolt'}"></i></div>
+                                <h4 class="srv-title">${s.title}</h4>
+                                <p class="srv-desc">${s.desc}</p>
+                            </div>
+                            <a href="${s.link || '#'}" ${s.link && s.link.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} class="srv-btn">
+                                ${s.btnText || 'دخول الخدمة'} <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Students Database Override
+            if (Array.isArray(data.students) && data.students.length > 0) {
+                window.STUDENTS_DATABASE = data.students;
+            }
+
+            // FAQs
+            if (Array.isArray(data.faqs) && data.faqs.length > 0) {
+                const faqList = document.querySelector('.faq-list');
+                if (faqList) {
+                    faqList.innerHTML = data.faqs.map(f => `
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <span>${f.q}</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">${f.a}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Footer
+            const fBrandH4 = document.querySelector('.footer-brand h4');
+            if (fBrandH4 && data.name) fBrandH4.textContent = data.name;
+
+            const fBrandP = document.querySelector('.footer-brand p');
+            if (fBrandP && data.footerDesc) fBrandP.textContent = data.footerDesc;
+
+            const fBottom = document.querySelector('.footer-bottom');
+            if (fBottom && data.copyright) fBottom.textContent = data.copyright;
+        }
+
+        // Fill vision and mission defaults if still empty
+        const vText = document.querySelector('.vision-text');
+        if (vText && !vText.textContent.trim()) {
+            vText.textContent = "توفير تعليم ثانوي متميز قائم على مهارات القرن الحادي والعشرين والتحول الرقمي، وتخريج جيل مبدع متمسك بالقيم الوطنية قادر على التنافس العلمي والمعرفي.";
+        }
+        const mText = document.querySelector('.mission-text');
+        if (mText && !mText.textContent.trim()) {
+            mText.textContent = "تقديم بيئة تربوية محفزة تسخر المعامل الذكية والشاشات التفاعلية لدعم التفكير النقدي لدى الطلاب، وتنمية قدرات الكادر التعليمي، وبناء شراكة مجتمعية وثيقة مع أولياء الأمور.";
+        }
+
+    } catch(err) {
+        console.warn('Notice loading school data:', err);
+    }
+}
+
+// ======================== ADMIN SINGLE BUTTON INJECTION ========================
+function injectSchoolAdminLinks(schoolId) {
+    // Clean up any extra admin buttons from top bar or footer so there is strictly ONE button
+    document.querySelectorAll('.top-admin-link, .footer-admin-link, .top-notice-bar .btn-school-admin, .footer-links .btn-school-admin').forEach(el => el.remove());
+
+    // Ensure ONLY ONE single button exists in the main navbar
+    const navMenu = document.getElementById("navMenu");
+    if (navMenu) {
+        const existingBtns = navMenu.querySelectorAll('.btn-school-admin');
+        if (existingBtns.length > 1) {
+            for (let i = 1; i < existingBtns.length; i++) {
+                existingBtns[i].closest('li')?.remove();
+            }
+        } else if (existingBtns.length === 0) {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <a href="school-admin.html?id=${schoolId}" class="btn-school-admin" title="لوحة تحكم الموقع">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    لوحة التحكم
+                </a>
+            `;
+            navMenu.appendChild(li);
+        }
+    }
+}
+
+// ======================== MOBILE NAVIGATION ========================
+function initMobileNav() {
     const menuToggle = document.getElementById("mobileToggle");
     const navMenu = document.getElementById("navMenu");
 
@@ -251,7 +419,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Close when clicking any nav link
         navMenu.querySelectorAll(".nav-link").forEach(link => {
             link.addEventListener("click", () => {
                 navMenu.classList.remove("mobile-open");
@@ -263,8 +430,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+}
 
-    // 2. Schedule Tabs Switcher
+// ======================== SCHEDULE TABS ========================
+function initScheduleTabs() {
     const tabBtns = document.querySelectorAll(".schedule-tabs .tab-btn");
     const scheduleDays = document.querySelectorAll(".schedule-day-content");
 
@@ -283,23 +452,26 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+}
 
-    // 3. FAQ Accordion
-    const faqItems = document.querySelectorAll(".faq-item");
-    faqItems.forEach(item => {
+// ======================== FAQ ACCORDION ========================
+function initFaqAccordion() {
+    document.querySelectorAll(".faq-item").forEach(item => {
         const questionBtn = item.querySelector(".faq-question");
         if (questionBtn) {
-            questionBtn.addEventListener("click", () => {
+            questionBtn.onclick = function() {
                 const isOpen = item.classList.contains("open");
-                faqItems.forEach(i => i.classList.remove("open"));
+                document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
                 if (!isOpen) {
                     item.classList.add("open");
                 }
-            });
+            };
         }
     });
+}
 
-    // 4. Student Inquiry by Name or Code (البحث في قاعدة بيانات الطلاب المسجلين فقط)
+// ======================== STUDENT INQUIRY ========================
+function initStudentInquiry() {
     const inquiryForm = document.getElementById("studentInquiryForm");
     const inquiryResult = document.getElementById("inquiryResult");
 
@@ -314,7 +486,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const student = findStudentData(inputVal);
 
-            // إذا لم يكن الاسم مسجلاً في قاعدة البيانات -> إظهار كارت الخطأ (Error)
             if (!student) {
                 inquiryResult.innerHTML = `
                     <div class="student-error-card">
@@ -335,8 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // توليد كروت المواد والدرجات في حال وجود الطالب
-            const gradesHtml = student.grades.map(g => `
+            const gradesHtml = (student.grades || []).map(g => `
                 <div class="grade-mini-card">
                     <div class="grade-subject">${g.subject}</div>
                     <div class="grade-score">${g.score}</div>
@@ -354,37 +524,37 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div>
                                 <h4 class="student-result-name">${student.name}</h4>
                                 <div class="student-tags-row">
-                                    <span class="s-tag"><i class="fa-solid fa-id-card"></i> كود: ${student.code}</span>
-                                    <span class="s-tag"><i class="fa-solid fa-hashtag"></i> رقم الجلوس: ${student.seatNumber}</span>
-                                    <span class="s-tag"><i class="fa-solid fa-chalkboard-user"></i> ${student.grade} (${student.section})</span>
+                                    <span class="s-tag"><i class="fa-solid fa-id-card"></i> كود: ${student.code || '---'}</span>
+                                    <span class="s-tag"><i class="fa-solid fa-hashtag"></i> رقم الجلوس: ${student.seatNumber || '---'}</span>
+                                    <span class="s-tag"><i class="fa-solid fa-chalkboard-user"></i> ${student.grade || ''} (${student.section || ''})</span>
                                 </div>
                             </div>
                         </div>
                         <div class="student-badge-wrap">
-                            <span class="student-status-badge ${student.statusType}">
+                            <span class="student-status-badge ${student.statusType || 'success'}">
                                 <i class="fa-solid ${student.statusType === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i>
-                                ${student.status}
+                                ${student.status || 'مقيد بانتظام'}
                             </span>
-                            <div class="student-rating-label">${student.rating}</div>
+                            <div class="student-rating-label">${student.rating || 'ممتاز'}</div>
                         </div>
                     </div>
 
                     <div class="student-stats-grid">
                         <div class="s-stat-box">
                             <span class="s-stat-title"><i class="fa-solid fa-chart-pie"></i> المجموع والنسبة</span>
-                            <strong class="s-stat-value text-gold">${student.totalScore} (${student.percentage})</strong>
+                            <strong class="s-stat-value text-gold">${student.totalScore || ''} (${student.percentage || ''})</strong>
                         </div>
                         <div class="s-stat-box">
                             <span class="s-stat-title"><i class="fa-solid fa-calendar-check"></i> نسبة الحضور</span>
-                            <strong class="s-stat-value">${student.attendance}</strong>
+                            <strong class="s-stat-value">${student.attendance || '90%'}</strong>
                         </div>
                         <div class="s-stat-box">
                             <span class="s-stat-title"><i class="fa-solid fa-tablet-screen-button"></i> حالة التابلت</span>
-                            <strong class="s-stat-value">${student.tabletStatus}</strong>
+                            <strong class="s-stat-value">${student.tabletStatus || 'مفعل'}</strong>
                         </div>
                         <div class="s-stat-box">
                             <span class="s-stat-title"><i class="fa-solid fa-clipboard-check"></i> التقييمات الأسبوعية</span>
-                            <strong class="s-stat-value">${student.evaluations}</strong>
+                            <strong class="s-stat-value">${student.evaluations || 'مكتملة'}</strong>
                         </div>
                     </div>
 
@@ -399,7 +569,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <i class="fa-solid fa-message"></i>
                         <div>
                             <strong>ملاحظات وتوجيه إدارة المدرسة:</strong>
-                            <p>${student.notes}</p>
+                            <p>${student.notes || 'طالب متميز وملتزم بالأنشطة والمناهج الدراسية.'}</p>
                         </div>
                     </div>
                 </div>
@@ -409,8 +579,10 @@ document.addEventListener("DOMContentLoaded", () => {
             showToast(`تم عرض بيان درجات الطالب: ${student.name}`, "success");
         });
     }
+}
 
-    // 5. Contact Form Handler
+// ======================== CONTACT FORM ========================
+function initContactForm() {
     const contactForm = document.getElementById("schoolContactForm");
     if (contactForm) {
         contactForm.addEventListener("submit", (e) => {
@@ -419,23 +591,60 @@ document.addEventListener("DOMContentLoaded", () => {
             contactForm.reset();
         });
     }
+}
 
-    // 6. Toast Notification Helper
-    window.showToast = function(message, type = "success") {
-        let toast = document.getElementById("toastBox");
-        if (!toast) {
-            toast = document.createElement("div");
-            toast.id = "toastBox";
-            toast.className = "toast-msg";
-            document.body.appendChild(toast);
+// ======================== ANTHEM PLAYER ========================
+function initAnthemPlayer() {
+    let music = document.getElementById('bgMusic');
+    let btn = document.getElementById('toggleBtn');
+    const topBarLeft = document.querySelector(".top-bar-left");
+
+    // Check if music exists or create dynamically
+    if (!music && topBarLeft) {
+        music = document.createElement("audio");
+        music.id = "bgMusic";
+        music.loop = true;
+        music.src = "./Albumaty.Com_wtnyt_msryt_alnshyd_alwtny_almsry.mp3";
+        topBarLeft.appendChild(music);
+    }
+
+    if (!btn && topBarLeft) {
+        btn = document.createElement("button");
+        btn.id = "toggleBtn";
+        btn.className = "music-btn";
+        btn.innerHTML = "🔊 النشيد الوطني";
+        btn.onclick = toggleMusic;
+        topBarLeft.appendChild(btn);
+    }
+
+    window.toggleMusic = function() {
+        if (!music) return;
+        if (music.paused) {
+            music.play().then(() => {
+                if (btn) btn.innerHTML = "🔇 إيقاف النشيد";
+            }).catch(e => console.log('Audio play blocked:', e));
+        } else {
+            music.pause();
+            if (btn) btn.innerHTML = "🔊 النشيد الوطني";
         }
-        const isError = type === "error";
-        const icon = isError ? "fa-circle-xmark" : "fa-circle-check";
-        const color = isError ? "#ef4444" : "#D9A72E";
-        toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}; font-size: 18px;"></i> <span>${message}</span>`;
-        toast.classList.add("show");
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 4000);
     };
-});
+}
+
+// ======================== TOAST HELPER ========================
+window.showToast = function(message, type = "success") {
+    let toast = document.getElementById("toastBox");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toastBox";
+        toast.className = "toast-msg";
+        document.body.appendChild(toast);
+    }
+    const isError = type === "error";
+    const icon = isError ? "fa-circle-xmark" : "fa-circle-check";
+    const color = isError ? "#ef4444" : "#D9A72E";
+    toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}; font-size: 18px;"></i> <span>${message}</span>`;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 4000);
+};

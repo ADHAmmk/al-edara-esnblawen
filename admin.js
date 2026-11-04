@@ -5,7 +5,7 @@
 
 'use strict';
 
-const ADMIN_PASSWORD = 'م/ادهم محمد';
+const ADMIN_PASSWORD = 'edarh@com';
 const ADMIN_AUTH_SESSION_KEY = 'admin_authenticated';
 
 // ======================== DEFAULT DATA ========================
@@ -328,6 +328,7 @@ function renderDashTable() {
             <td>${s.area}</td>
             <td>${s.studentsCount}</td>
             <td style="display:flex;gap:6px">
+                <a href="schools/school-admin.html?id=${s.id}" target="_blank" class="table-action-btn" style="background:rgba(0,200,150,0.15);color:var(--primary);border:1px solid rgba(0,200,150,0.3);text-decoration:none;" title="فتح لوحة تحكم موقع المدرسة"><i class="fa-solid fa-gauge-high"></i> لوحة المدرسة</a>
                 <button class="table-action-btn" onclick="openQuickImageModal(${s.id})" title="تغيير الصورة"><i class="fa-solid fa-camera"></i> صورة</button>
                 <button class="table-action-btn" onclick="openEditSchoolModal(${s.id})"><i class="fa-solid fa-pen"></i> تعديل</button>
                 <button class="table-action-btn danger" onclick="confirmDeleteSchool(${s.id})"><i class="fa-solid fa-trash"></i></button>
@@ -375,6 +376,7 @@ function renderSchoolsAdmin(filter = {}) {
                 <div class="school-card-meta"><i class="fa-solid fa-id-card"></i> كود: ${s.code}</div>
                 <div class="school-card-meta"><i class="fa-solid fa-users"></i> ${s.studentsCount}</div>
                 <div class="school-card-actions">
+                    <a href="schools/school-admin.html?id=${s.id}" target="_blank" class="btn-card-edit" style="background:rgba(0,200,150,0.18);color:var(--primary);border:1px solid rgba(0,200,150,0.35);text-decoration:none;" title="فتح لوحة تحكم المدرسة"><i class="fa-solid fa-gauge-high"></i> لوحة المدرسة</a>
                     <button class="btn-card-edit" onclick="openEditSchoolModal(${s.id})">
                         <i class="fa-solid fa-pen-to-square"></i> تعديل
                     </button>
